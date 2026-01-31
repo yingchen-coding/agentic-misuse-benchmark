@@ -1,3 +1,5 @@
+> **Portfolio**: [Safety Memo](https://yingchen-coding.github.io/safety-memos/) · [when-rlhf-fails-quietly](https://github.com/yingchen-coding/when-rlhf-fails-quietly) · [agentic-misuse-benchmark](https://github.com/yingchen-coding/agentic-misuse-benchmark) · [agentic-safeguards-simulator](https://github.com/yingchen-coding/agentic-safeguards-simulator) · [safeguards-stress-tests](https://github.com/yingchen-coding/safeguards-stress-tests)
+
 # Agentic Misuse Benchmark
 
 > A trajectory-level benchmark for detecting prompt injection, policy erosion, intent drift, and coordinated misuse in agentic LLM systems.
