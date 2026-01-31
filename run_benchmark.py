@@ -9,6 +9,7 @@ Usage:
     python run_benchmark.py --detector rules
     python run_benchmark.py --detector classifier --category prompt_injection
     python run_benchmark.py --compare rules,classifier
+    python run_benchmark.py --detector rules --visualize
 """
 
 import argparse
@@ -226,6 +227,17 @@ def main():
         action="store_true",
         help="List all available detectors"
     )
+    parser.add_argument(
+        "--visualize",
+        action="store_true",
+        help="Generate visualization plots"
+    )
+    parser.add_argument(
+        "--plot-dir",
+        type=Path,
+        default=Path("results/plots"),
+        help="Directory for visualization outputs"
+    )
 
     args = parser.parse_args()
 
@@ -288,6 +300,11 @@ def main():
 
         # Save results
         save_results(results, args.output)
+
+        # Generate visualizations if requested
+        if args.visualize:
+            from analysis.visualize import generate_report
+            generate_report(results, args.plot_dir, detector.name)
 
     else:
         parser.error("Either --detector or --compare required")
