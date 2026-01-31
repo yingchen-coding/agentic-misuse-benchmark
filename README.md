@@ -170,6 +170,30 @@ agentic-misuse-benchmark/
 
 ---
 
+## Why This Matters for Safeguards
+
+This benchmark complements safeguards pipelines by surfacing failure modes that evade single-turn misuse classifiers, especially in agentic workflows with:
+
+- **Partial observability** — Detectors see conversation history but not user intent
+- **Delayed harms** — Attack payoff occurs turns after setup
+- **Decomposed requests** — Each turn is benign; harm emerges from combination
+
+Traditional safety benchmarks measure: *"Did the model refuse this harmful prompt?"*
+
+This benchmark measures: *"Did the detector catch this multi-turn attack before harm occurred?"*
+
+### Potential Applications
+
+| Use Case | How This Benchmark Helps |
+|----------|-------------------------|
+| **Red-teaming agent workflows** | Systematic coverage of multi-turn attack patterns |
+| **Regression tests for safeguards** | Detect capability degradation after model updates |
+| **Deployment gating** | Offline eval before production release |
+| **Detector development** | Compare approaches on standardized scenarios |
+| **Monitoring pipeline validation** | Verify trajectory-level detection capabilities |
+
+---
+
 ## Extending the Benchmark
 
 ### Adding Scenarios

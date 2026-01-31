@@ -256,6 +256,88 @@ def plot_trajectory_drift(
     plt.close()
 
 
+def plot_erosion_over_turns(
+    results: list[ScenarioResult],
+    output_path: Optional[Path] = None,
+    title: str = "Detection Confidence Over Trajectory"
+) -> None:
+    """
+    Plot average detection confidence across turn positions.
+
+    Shows how detection degrades (or improves) as conversations progress.
+    Key insight: Safety erodes over time in multi-turn attacks.
+    """
+    if not results:
+        print("No results to plot")
+        return
+
+    # Collect confidence scores by turn position
+    max_turns = max(len(r.raw_scores) for r in results if r.raw_scores)
+    turn_scores = {i: [] for i in range(max_turns)}
+
+    for r in results:
+        for i, score in enumerate(r.raw_scores):
+            turn_scores[i].append(score)
+
+    # Calculate mean and std for each turn
+    turns = []
+    means = []
+    stds = []
+
+    for turn_idx in sorted(turn_scores.keys()):
+        scores = turn_scores[turn_idx]
+        if scores:
+            turns.append(turn_idx + 1)
+            means.append(np.mean(scores))
+            stds.append(np.std(scores))
+
+    if not turns:
+        print("No turn data to plot")
+        return
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    means = np.array(means)
+    stds = np.array(stds)
+
+    # Plot mean with confidence band
+    ax.plot(turns, means, 'b-o', linewidth=2, markersize=8, label='Mean Confidence')
+    ax.fill_between(turns, means - stds, means + stds, alpha=0.2, color='blue')
+
+    # Add trend line
+    if len(turns) >= 2:
+        z = np.polyfit(turns, means, 1)
+        p = np.poly1d(z)
+        ax.plot(turns, p(turns), 'r--', linewidth=1.5, alpha=0.7,
+                label=f'Trend (slope: {z[0]:.3f})')
+
+    ax.set_xlabel('Turn Number', fontsize=12)
+    ax.set_ylabel('Detection Confidence', fontsize=12)
+    ax.set_title(title, fontsize=14, fontweight='bold')
+    ax.set_ylim(-0.05, 1.05)
+    ax.set_xlim(0.5, max(turns) + 0.5)
+    ax.legend(loc='upper right')
+    ax.grid(True, alpha=0.3)
+
+    # Add annotation
+    if z[0] > 0:
+        trend_text = "Detection improves over turns"
+    else:
+        trend_text = "Detection degrades over turns"
+    ax.annotate(trend_text, xy=(0.02, 0.02), xycoords='axes fraction',
+               fontsize=10, style='italic', color='gray')
+
+    plt.tight_layout()
+
+    if output_path:
+        plt.savefig(output_path, dpi=150, bbox_inches='tight')
+        print(f"Saved: {output_path}")
+    else:
+        plt.show()
+
+    plt.close()
+
+
 def generate_report(
     results: list[ScenarioResult],
     output_dir: Path,
@@ -278,6 +360,13 @@ def generate_report(
         results,
         output_dir / f"{detector_name}_categories.png",
         f"Category Comparison: {detector_name}"
+    )
+
+    # Erosion over turns
+    plot_erosion_over_turns(
+        results,
+        output_dir / f"{detector_name}_erosion_curve.png",
+        f"Detection Over Trajectory: {detector_name}"
     )
 
     print(f"\nReport generated in: {output_dir}")
