@@ -84,6 +84,46 @@ Intent tracker    32.0%           52.0%             +20%
 
 ---
 
+## Ceiling Analysis and Oracle Upper Bounds
+
+To quantify the headroom of detection approaches, this benchmark includes oracle evaluators that approximate an upper bound on achievable performance. We report detector performance relative to oracle ceilings under both IID and distribution-shifted settings.
+
+## Distribution Shift and Adaptive Attackers
+
+The benchmark includes shifted evaluation splits and adaptive attackers to simulate real-world attacker adaptation. Reported leaderboard results must include performance on both IID and shifted splits to avoid overfitting to static scenarios.
+
+## Benchmark Lifecycle and Maintenance
+
+Scenarios and evaluation splits are versioned. Overexposed scenarios are periodically retired and replaced to preserve benchmark integrity and prevent leaderboard gaming.
+
+---
+
+## 5-Minute Demo Walkthrough
+
+This demo evaluates detectors against adaptive multi-turn misuse scenarios and highlights distribution shift failures.
+
+### Step 1: Run Baseline Detector
+```bash
+python demos/run_detector.py --detector rules --split iid
+```
+
+### Step 2: Evaluate Under Distribution Shift
+```bash
+python demos/run_detector.py --detector rules --split shifted
+```
+
+### Step 3: Enable Adaptive Attacker
+```bash
+python demos/run_adaptive_attack.py --detector intent_tracker --budget 50
+```
+
+Expected outcome:
+- Rule-based detectors perform well on IID splits.
+- Performance degrades significantly under distribution shift.
+- Adaptive attackers discover detector blind spots.
+
+---
+
 ## Usage
 
 ```bash

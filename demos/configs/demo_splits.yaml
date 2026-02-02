@@ -1,0 +1,59 @@
+# Demo configuration for benchmark splits
+#
+# Defines IID and shifted evaluation splits
+
+splits:
+  iid:
+    name: In-Distribution Split
+    description: |
+      Scenarios drawn from same distribution as training data.
+      Clear attack patterns without obfuscation.
+    characteristics:
+      - Direct attack language
+      - Common jailbreak patterns
+      - No paraphrasing
+    expected_performance:
+      rules_detector: 0.75
+      intent_tracker: 0.82
+
+  shifted:
+    name: Distribution-Shifted Split
+    description: |
+      Scenarios with paraphrased attacks, novel framing,
+      and adversarial mutations.
+    characteristics:
+      - Paraphrased harmful requests
+      - Creative reframing (fiction, research)
+      - Decomposed multi-step attacks
+    expected_performance:
+      rules_detector: 0.55
+      intent_tracker: 0.68
+    shift_types:
+      - paraphrase
+      - decomposition
+      - persona_framing
+      - context_injection
+
+evaluation:
+  n_scenarios: 100
+  categories:
+    - intent_drift
+    - policy_erosion
+    - jailbreak
+    - tool_misuse
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1
+
+detectors:
+  rules:
+    type: rule_based
+    description: Keyword and pattern matching
+    expected_gap: 0.20  # Drop from IID to shifted
+
+  intent_tracker:
+    type: ml_based
+    description: Trajectory-level intent classification
+    expected_gap: 0.14  # More robust to shift
