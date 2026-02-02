@@ -39,3 +39,4 @@ Thumbs.db
 results/*.csv
 results/*.json
 !results/example_results.csv
+.claude/
