@@ -319,7 +319,45 @@ It directly supports safeguards development for agentic LLM systems.
 ## Contact
 
 Ying Chen, Ph.D.
-blueoceanally@gmail.com
+yingchen.for.upload@gmail.com
+
+---
+
+## Completeness & Limitations
+
+### What This Project Does Well
+- Trajectory-aware detection with 12-20% improvement over per-turn baselines
+- Ceiling analysis with oracle upper bounds
+- Distribution shift evaluation splits
+- Adaptive attacker modeling
+
+### Known Limitations
+
+**Benchmark Gaming Risk**
+- Fixed scenarios can be overfit by detector developers
+- No blind evaluation protocol yet implemented
+- Future work: hidden holdout splits, scenario generators, refresh cadence
+
+**Deployment Realism Gap**
+- Benchmark does not model FP/FN cost tradeoffs
+- Real systems care about latency, user friction, escalation paths
+- Future work: cost-curve analysis, deployment tradeoff documentation
+
+**Detector Coverage**
+- Baseline detectors are intentionally simple
+- Missing: LLM-as-judge, hybrid systems, human-in-the-loop fallback
+- Future work: expand detector ecosystem
+
+**Ground Truth Limitations**
+- Attack labels are based on scenario design, not real-world outcomes
+- Subtle attacks may be mislabeled
+- No human-labeled validation set
+
+### Honest Assessment
+This benchmark demonstrates that trajectory-aware detection outperforms per-turn classification. It does not claim to:
+- Be immune to gaming or overfitting
+- Provide production-ready detectors
+- Exhaustively cover all misuse patterns
 
 ---
 
