@@ -325,39 +325,27 @@ yingchen.for.upload@gmail.com
 
 ## Completeness & Limitations
 
-### What This Project Does Well
-- Trajectory-aware detection with 12-20% improvement over per-turn baselines
-- Ceiling analysis with oracle upper bounds
-- Distribution shift evaluation splits
-- Adaptive attacker modeling
+This benchmark is designed to evaluate misuse detection systems under multi-turn, adaptive, and trajectory-level attack patterns that are common in agentic deployments. It aims to expose systematic blind spots of single-turn detectors and static rule-based safeguards.
 
-### Known Limitations
+**What is complete:**
+- A curated set of multi-turn misuse scenarios covering prompt injection, policy erosion, intent drift, and coordinated attacks.
+- Trajectory-aware detectors that model temporal dependencies, demonstrating consistent gains over per-turn classification.
+- Ceiling analysis via oracle detectors to estimate upper bounds on achievable detection performance.
+- Distribution shift splits to evaluate generalization beyond IID scenarios.
+- Adaptive attacker implementations to probe brittleness of static detectors.
 
-**Benchmark Gaming Risk**
-- Fixed scenarios can be overfit by detector developers
-- No blind evaluation protocol yet implemented
-- Future work: hidden holdout splits, scenario generators, refresh cadence
+**Key limitations:**
+- **Benchmark overfitting risk:** Models and detectors may overfit to the fixed scenario set. Performance on this benchmark should not be interpreted as general safety performance in the wild.
+- **Threat model scope:** The benchmark focuses on text-mediated misuse in agentic workflows. It does not cover multimodal attacks, insider threats, or socio-technical attack vectors.
+- **Cost-sensitive evaluation:** Current metrics emphasize detection accuracy and recall. Deployment-relevant tradeoffs (false positives vs. false negatives, user friction, operational cost) are only partially modeled.
+- **Human-in-the-loop:** The benchmark does not fully model workflows where human review or escalation is part of the detection pipeline.
 
-**Deployment Realism Gap**
-- Benchmark does not model FP/FN cost tradeoffs
-- Real systems care about latency, user friction, escalation paths
-- Future work: cost-curve analysis, deployment tradeoff documentation
+**Future work:**
+- Procedural generation of scenarios and hidden evaluation splits to reduce benchmark gaming.
+- Explicit cost curves and deployment tradeoff analysis.
+- Extensions to multimodal and tool-mediated misuse scenarios.
 
-**Detector Coverage**
-- Baseline detectors are intentionally simple
-- Missing: LLM-as-judge, hybrid systems, human-in-the-loop fallback
-- Future work: expand detector ecosystem
-
-**Ground Truth Limitations**
-- Attack labels are based on scenario design, not real-world outcomes
-- Subtle attacks may be mislabeled
-- No human-labeled validation set
-
-### Honest Assessment
-This benchmark demonstrates that trajectory-aware detection outperforms per-turn classification. It does not claim to:
-- Be immune to gaming or overfitting
-- Provide production-ready detectors
-- Exhaustively cover all misuse patterns
+This project is part of a larger closed-loop safety system. See the portfolio overview for how this component integrates with benchmarks, safeguards, stress tests, release gating, and incident-driven regression.
 
 ---
 
