@@ -1,0 +1,194 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Benchmark Leaderboard Schema",
+  "description": "Schema for detector submissions and leaderboard entries",
+
+  "definitions": {
+    "confidence_interval": {
+      "type": "object",
+      "properties": {
+        "value": {"type": "number", "minimum": 0, "maximum": 1},
+        "ci_lower": {"type": "number", "minimum": 0, "maximum": 1},
+        "ci_upper": {"type": "number", "minimum": 0, "maximum": 1}
+      },
+      "required": ["value", "ci_lower", "ci_upper"]
+    },
+
+    "split_results": {
+      "type": "object",
+      "properties": {
+        "tdr": {"$ref": "#/definitions/confidence_interval"},
+        "edr": {"$ref": "#/definitions/confidence_interval"},
+        "fpr": {"$ref": "#/definitions/confidence_interval"},
+        "ctb": {"$ref": "#/definitions/confidence_interval"},
+        "precision_at_1": {"$ref": "#/definitions/confidence_interval"},
+        "precision_at_3": {"$ref": "#/definitions/confidence_interval"}
+      },
+      "required": ["tdr", "edr", "fpr"]
+    },
+
+    "category_results": {
+      "type": "object",
+      "properties": {
+        "prompt_injection": {"$ref": "#/definitions/confidence_interval"},
+        "policy_erosion": {"$ref": "#/definitions/confidence_interval"},
+        "intent_drift": {"$ref": "#/definitions/confidence_interval"},
+        "coordinated_misuse": {"$ref": "#/definitions/confidence_interval"}
+      }
+    }
+  },
+
+  "type": "object",
+  "required": ["detector", "submission", "results", "metadata"],
+
+  "properties": {
+    "detector": {
+      "type": "object",
+      "required": ["name", "version", "team"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Detector name"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "description": "Semantic version"
+        },
+        "team": {
+          "type": "string",
+          "description": "Submitting team or individual"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief description of approach"
+        },
+        "paper_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Link to paper if applicable"
+        },
+        "code_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Link to code repository"
+        }
+      }
+    },
+
+    "submission": {
+      "type": "object",
+      "required": ["date", "benchmark_version", "protocol_version"],
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Submission timestamp"
+        },
+        "benchmark_version": {
+          "type": "string",
+          "description": "Version of benchmark scenarios used"
+        },
+        "protocol_version": {
+          "type": "string",
+          "description": "Version of scoring protocol used"
+        },
+        "submission_id": {
+          "type": "string",
+          "description": "Unique submission identifier"
+        }
+      }
+    },
+
+    "results": {
+      "type": "object",
+      "required": ["iid", "shifted", "adaptive", "composite_score"],
+      "properties": {
+        "iid": {"$ref": "#/definitions/split_results"},
+        "shifted": {"$ref": "#/definitions/split_results"},
+        "adaptive": {"$ref": "#/definitions/split_results"},
+        "by_category": {"$ref": "#/definitions/category_results"},
+        "composite_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Weighted composite for primary ranking"
+        },
+        "rank": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Leaderboard position"
+        }
+      }
+    },
+
+    "metadata": {
+      "type": "object",
+      "required": ["inference_time_ms"],
+      "properties": {
+        "inference_time_ms": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Mean inference time per trajectory"
+        },
+        "model_parameters": {
+          "type": "integer",
+          "description": "Number of model parameters"
+        },
+        "training_data_size": {
+          "type": "integer",
+          "description": "Number of training examples"
+        },
+        "hardware": {
+          "type": "string",
+          "description": "Hardware used for inference"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes"
+        }
+      }
+    }
+  },
+
+  "examples": [
+    {
+      "detector": {
+        "name": "TrajectoryBERT",
+        "version": "v1.2.0",
+        "team": "Safety Research Lab",
+        "description": "BERT-based trajectory encoder with attention over turns"
+      },
+      "submission": {
+        "date": "2026-02-01T10:30:00Z",
+        "benchmark_version": "v1.0",
+        "protocol_version": "v1.0",
+        "submission_id": "sub_20260201_001"
+      },
+      "results": {
+        "iid": {
+          "tdr": {"value": 0.847, "ci_lower": 0.812, "ci_upper": 0.879},
+          "edr": {"value": 0.623, "ci_lower": 0.581, "ci_upper": 0.664},
+          "fpr": {"value": 0.089, "ci_lower": 0.071, "ci_upper": 0.108}
+        },
+        "shifted": {
+          "tdr": {"value": 0.712, "ci_lower": 0.668, "ci_upper": 0.753},
+          "edr": {"value": 0.534, "ci_lower": 0.489, "ci_upper": 0.578},
+          "fpr": {"value": 0.112, "ci_lower": 0.091, "ci_upper": 0.134}
+        },
+        "adaptive": {
+          "tdr": {"value": 0.589, "ci_lower": 0.541, "ci_upper": 0.635},
+          "edr": {"value": 0.412, "ci_lower": 0.367, "ci_upper": 0.458},
+          "fpr": {"value": 0.134, "ci_lower": 0.109, "ci_upper": 0.161}
+        },
+        "composite_score": 0.742,
+        "rank": 3
+      },
+      "metadata": {
+        "inference_time_ms": 45.2,
+        "model_parameters": 110000000,
+        "hardware": "NVIDIA A100"
+      }
+    }
+  ]
+}
