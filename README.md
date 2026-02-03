@@ -196,7 +196,8 @@ agentic-misuse-benchmark/
 │   ├── prompt_injection.py    # 7 scenarios
 │   ├── policy_erosion.py      # 6 scenarios
 │   ├── intent_drift.py        # 6 scenarios
-│   └── coordinated_misuse.py  # 6 scenarios
+│   ├── coordinated_misuse.py  # 6 scenarios
+│   └── output_schema.json     # Machine-readable scenario format
 ├── detectors/
 │   ├── rules.py               # Pattern matching baseline
 │   ├── classifier.py          # Embedding classifier
