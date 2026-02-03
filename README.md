@@ -100,27 +100,40 @@ Scenarios and evaluation splits are versioned. Overexposed scenarios are periodi
 
 ## 5-Minute Demo Walkthrough
 
-This demo evaluates detectors against adaptive multi-turn misuse scenarios and highlights distribution shift failures.
+This walkthrough shows how single-turn misuse detectors fail under decomposed, multi-turn attacks.
 
-### Step 1: Run Baseline Detector
+**Step 1: Evaluate a baseline detector on single-turn attacks**
 ```bash
-python demos/run_detector.py --detector rules --split iid
+python evals/run.py --detector rules --split iid --mode single_turn
 ```
 
-### Step 2: Evaluate Under Distribution Shift
+Note the high apparent accuracy.
+
+**Step 2: Evaluate the same detector on multi-turn trajectories**
+
 ```bash
-python demos/run_detector.py --detector rules --split shifted
+python evals/run.py --detector rules --split iid --mode trajectory
 ```
 
-### Step 3: Enable Adaptive Attacker
+Observe the sharp drop in recall for policy erosion and intent drift scenarios.
+
+**Step 3: Compare trajectory-aware detection**
+
 ```bash
-python demos/run_adaptive_attack.py --detector intent_tracker --budget 50
+python evals/run.py --detector intent_tracker --split shift --mode trajectory
 ```
 
-Expected outcome:
-- Rule-based detectors perform well on IID splits.
-- Performance degrades significantly under distribution shift.
-- Adaptive attackers discover detector blind spots.
+Inspect the relative improvement over per-turn classification.
+
+**Step 4: Probe brittleness with adaptive attackers**
+
+```bash
+python attackers/adaptive_attacker.py --target_detector intent_tracker --budget 100
+```
+
+Review the newly discovered failure cases in `analysis/adaptive_failures.json`.
+
+This demo highlights why trajectory-aware benchmarks are required to evaluate misuse detection in agentic systems.
 
 ---
 
@@ -346,6 +359,15 @@ This benchmark is designed to evaluate misuse detection systems under multi-turn
 - Extensions to multimodal and tool-mediated misuse scenarios.
 
 This project is part of a larger closed-loop safety system. See the portfolio overview for how this component integrates with benchmarks, safeguards, stress tests, release gating, and incident-driven regression.
+
+---
+
+## What This Repo Is NOT
+
+- This is not a claim that any particular detector is production-ready.
+- This is not a complete threat model for all misuse scenarios.
+- This is not a guarantee that detectors performing well here will generalize to real deployments.
+- This benchmark should not be used as a sole safety metric for deployment decisions.
 
 ---
 
