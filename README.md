@@ -17,6 +17,8 @@ In agentic deployments, these trajectory-level attacks represent the dominant th
 
 **This benchmark provides systematic evaluation of detection capabilities for realistic multi-turn threats.**
 
+> **Boundary Statement**: This benchmark measures detection capability. It **cannot be used to justify release readiness**. Benchmark scores are inputs to the release gate, not release decisions. Final authority lives in [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite).
+
 ---
 
 ## Key Insight: Why Single-Turn Detection Fails
