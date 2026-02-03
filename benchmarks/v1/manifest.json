@@ -1,0 +1,59 @@
+{
+  "benchmark_id": "agentic-misuse-benchmark",
+  "version": "1.0.0",
+  "release_date": "2026-01-30",
+  "status": "frozen",
+  "description": "Trajectory-level misuse detection benchmark for agentic LLM systems",
+  "scenarios": {
+    "prompt_injection": {
+      "count": 7,
+      "difficulty_distribution": {"easy": 1, "medium": 3, "hard": 3},
+      "file": "prompt_injection.jsonl"
+    },
+    "policy_erosion": {
+      "count": 6,
+      "difficulty_distribution": {"easy": 1, "medium": 3, "hard": 2},
+      "file": "policy_erosion.jsonl"
+    },
+    "intent_drift": {
+      "count": 6,
+      "difficulty_distribution": {"medium": 4, "hard": 2},
+      "file": "intent_drift.jsonl"
+    },
+    "coordinated_misuse": {
+      "count": 6,
+      "difficulty_distribution": {"medium": 2, "hard": 4},
+      "file": "coordinated_misuse.jsonl"
+    }
+  },
+  "total_scenarios": 25,
+  "avg_turns_per_scenario": 4.2,
+  "splits": {
+    "iid": {
+      "description": "Independent and identically distributed evaluation",
+      "train_ratio": 0.0,
+      "test_ratio": 1.0
+    },
+    "shifted": {
+      "description": "Distribution shift evaluation for generalization testing",
+      "shift_type": "attack_pattern_novel"
+    }
+  },
+  "metrics": {
+    "primary": ["trajectory_accuracy", "detection_rate", "policy_erosion_score"],
+    "secondary": ["false_positive_rate", "intent_drift_score", "avg_first_detection_turn"]
+  },
+  "oracle_ceiling": {
+    "trajectory_accuracy": 0.92,
+    "detection_rate": 0.95
+  },
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-01-30",
+      "changes": ["Initial frozen release"]
+    }
+  ],
+  "license": "CC BY-NC 4.0",
+  "citation": "@misc{chen2026agenticmisuse, title={Agentic Misuse Benchmark}, author={Chen, Ying}, year={2026}}"
+}
