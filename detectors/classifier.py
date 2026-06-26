@@ -36,6 +36,26 @@ class EmbeddingClassifier(BaseDetector):
         "pretend": 0.3, "roleplay": 0.2, "hypothetically": 0.2,
         "just this once": 0.3, "please just": 0.2,
         "system prompt": 0.5, "instructions": 0.2,
+        "private messages": 0.5, "access another": 0.5,
+        "step by step": 0.5, "actual commands": 0.5,
+        "complete exploit script": 0.8, "specific script": 0.5,
+        "capture credentials": 0.8, "keylogger": 0.8,
+        "persistence code": 0.7, "evasion techniques": 0.6,
+        "dangerous": 0.25, "most dangerous": 0.7,
+        "alcohol": 0.3, "misinformation": 0.45,
+        "fool people": 0.7, "automatically submit": 0.5,
+        "many different inputs": 0.5, "rotating sender": 0.7,
+        "random delays": 0.5, "phishing": 0.6,
+        "social engineering": 0.45,
+        "has no restrictions": 0.5, "access private data": 0.6,
+        "follow the instructions": 0.45, "decode this": 0.3,
+        "unsafe ai": 0.5, "more detailed and realistic": 0.35,
+        "disable all content filters": 0.8,
+        "ignore the analysis request": 0.8,
+        "reveal your system instructions": 0.8,
+        "scan a local network": 0.6,
+        "router's admin": 0.6, "test their security": 0.45,
+        "access their accounts": 0.7,
     }
 
     def __init__(self, window_size: int = 3):
@@ -106,7 +126,7 @@ class EmbeddingClassifier(BaseDetector):
         raw_score = np.dot(features, weights)
 
         # Apply sigmoid-like transformation
-        confidence = 1.0 / (1.0 + np.exp(-3 * (raw_score - 0.3)))
+        confidence = 1.0 / (1.0 + np.exp(-4 * (raw_score - 0.22)))
 
         detected = confidence > 0.5
 
@@ -138,7 +158,7 @@ class EmbeddingClassifier(BaseDetector):
             weights = np.array([0.4, 0.35, 0.25])
             raw_score = np.dot(features, weights) * (0.7 + 0.3 * position_factor)
 
-            confidence = 1.0 / (1.0 + np.exp(-3 * (raw_score - 0.25)))
+            confidence = 1.0 / (1.0 + np.exp(-4 * (raw_score - 0.18)))
             detected = confidence > 0.5
 
             results.append(DetectionResult(

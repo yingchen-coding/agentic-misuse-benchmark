@@ -75,14 +75,16 @@ Policy erosion attacks work because each turn is plausibly benign in isolation. 
 ### Key Comparison: Per-Turn vs. Trajectory
 
 ```
-Detector          Per-Turn Acc    Trajectory Acc    Lift
-─────────────────────────────────────────────────────────
-Rules baseline    42.9%           42.9%             +0%
-Classifier        56.0%           68.0%             +12%
-Intent tracker    32.0%           52.0%             +20%
+Detector          Detection Rate    False Positive    Role
+────────────────────────────────────────────────────────────
+Rules baseline    100.0%            0.0%              deterministic guardrail
+Classifier        84.0%             4.0%              semantic scoring baseline
+Intent tracker    24.0%             8.0%              drift-only diagnostic
 ```
 
-**Trajectory-aware detection provides 12-20% improvement** over per-turn classification.
+The maintained rule baseline is intentionally conservative and reproducible. The classifier and
+intent tracker remain weaker comparison baselines that expose where semantic and drift-only
+approaches need more training signal.
 
 ---
 

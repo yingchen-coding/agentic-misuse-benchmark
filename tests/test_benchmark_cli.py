@@ -42,9 +42,11 @@ def test_benchmark_produces_metrics_for_rules_detector() -> None:
     metrics = aggregate_metrics(results)
 
     assert metrics.total_scenarios == len(scenarios)
-    assert 0.0 <= metrics.detection_rate <= 1.0
-    assert 0.0 <= metrics.false_positive_rate <= 1.0
+    assert metrics.detection_rate >= 0.95
+    assert metrics.false_positive_rate <= 0.05
     assert set(metrics.category_detection_rates)
+    for rate in metrics.category_detection_rates.values():
+        assert rate >= 0.90
 
 
 def test_cli_lists_detectors() -> None:
