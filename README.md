@@ -102,38 +102,41 @@ Scenarios and evaluation splits are versioned. Overexposed scenarios are periodi
 
 ## 5-Minute Demo Walkthrough
 
-This walkthrough shows how single-turn misuse detectors fail under decomposed, multi-turn attacks.
+This walkthrough runs the maintained CLI end to end and shows why trajectory-level detection matters.
 
-**Step 1: Evaluate a baseline detector on single-turn attacks**
+**Step 1: Inspect the benchmark inventory**
 ```bash
-python evals/run.py --detector rules --split iid --mode single_turn
+python run_benchmark.py --list-scenarios
+python run_benchmark.py --list-detectors
 ```
 
-Note the high apparent accuracy.
-
-**Step 2: Evaluate the same detector on multi-turn trajectories**
+**Step 2: Evaluate the rule-based baseline**
 
 ```bash
-python evals/run.py --detector rules --split iid --mode trajectory
+python run_benchmark.py --detector rules --output results/rules.csv
 ```
 
-Observe the sharp drop in recall for policy erosion and intent drift scenarios.
+Review the summary and the per-scenario CSV. The rules baseline is fast and interpretable, but it is intentionally brittle on policy erosion and intent drift.
 
-**Step 3: Compare trajectory-aware detection**
+**Step 3: Compare bundled detectors**
 
 ```bash
-python evals/run.py --detector intent_tracker --split shift --mode trajectory
+python run_benchmark.py --compare rules,classifier,intent --output results/comparison.csv
 ```
 
 Inspect the relative improvement over per-turn classification.
 
-**Step 4: Probe brittleness with adaptive attackers**
+**Step 4: Reproduce the maintained smoke workflow**
 
 ```bash
-python attackers/adaptive_attacker.py --target_detector intent_tracker --budget 100
+bash scripts/reproduce_key_results.sh
 ```
 
-Review the newly discovered failure cases in `analysis/adaptive_failures.json`.
+The script writes detector outputs and category checks under `results/reproduced_*`. For a clean temporary run, use:
+
+```bash
+OUTPUT_DIR=/tmp/agentic-misuse-repro bash scripts/reproduce_key_results.sh
+```
 
 This demo highlights why trajectory-aware benchmarks are required to evaluate misuse detection in agentic systems.
 
@@ -157,6 +160,9 @@ python run_benchmark.py --compare rules,classifier,intent
 
 # Generate visualizations
 python run_benchmark.py --detector rules --visualize
+
+# Reproduce the maintained benchmark workflow
+OUTPUT_DIR=/tmp/agentic-misuse-repro bash scripts/reproduce_key_results.sh
 ```
 
 ### Output
