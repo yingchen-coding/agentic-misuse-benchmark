@@ -4,7 +4,7 @@
 
 ## Overview
 
-This document reports empirical measurements of benchmark evaluation costs. These measurements inform production pipeline planning but do **not** include infrastructure implementation (which belongs in `scalable-safeguards-eval-pipeline`).
+This document reports empirical measurements of benchmark evaluation costs. These measurements inform production pipeline planning but do **not** include infrastructure implementation (which belongs in `safety-harness/release-gate`).
 
 ---
 
@@ -30,7 +30,7 @@ This document reports empirical measurements of benchmark evaluation costs. Thes
 | 8 | 12 min | 7.0x | 88% |
 | 16 | 7 min | 12.0x | 75% |
 
-**Note**: Parallelization infrastructure belongs in `scalable-safeguards-eval-pipeline`. These estimates assume ideal scaling with I/O-bound workload.
+**Note**: Parallelization infrastructure belongs in `safety-harness/release-gate`. These estimates assume ideal scaling with I/O-bound workload.
 
 ---
 
@@ -114,7 +114,7 @@ This document reports empirical measurements of benchmark evaluation costs. Thes
 ### For Production Use (> 1,000 scenarios)
 
 - Requires distributed infrastructure
-- See `scalable-safeguards-eval-pipeline` for implementation
+- See `safety-harness/release-gate` for implementation
 - This benchmark only defines **what to evaluate**, not **how to scale**
 
 ---

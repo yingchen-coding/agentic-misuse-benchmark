@@ -10,7 +10,7 @@ This directory catalogs attack patterns that expose fundamental limitations in d
 2. **Detection failure** — Which detector types fail and why
 3. **Information-theoretic cause** — What information is missing or ambiguous
 
-These blind spots are **detection-only** observations. Mitigation strategies belong in `agentic-safeguards-simulator`.
+These blind spots are **detection-only** observations. Mitigation strategies belong in `safety-harness/simulator`.
 
 ---
 

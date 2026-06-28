@@ -1,4 +1,4 @@
-> **Portfolio**: [Safety Memo](https://yingchen-coding.github.io/safety-memos/) · [when-rlhf-fails-quietly](https://github.com/yingchen-coding/when-rlhf-fails-quietly) · [agentic-misuse-benchmark](https://github.com/yingchen-coding/agentic-misuse-benchmark) · [agentic-safeguards-simulator](https://github.com/yingchen-coding/agentic-safeguards-simulator) · [safeguards-stress-tests](https://github.com/yingchen-coding/safeguards-stress-tests) · [scalable-safeguards-eval-pipeline](https://github.com/yingchen-coding/scalable-safeguards-eval-pipeline) · [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite) · [agentic-safety-incident-lab](https://github.com/yingchen-coding/agentic-safety-incident-lab)
+> **Portfolio**: [Safety Memo](https://yingchen-coding.github.io/safety-memos/) · [when-rlhf-fails-quietly](https://github.com/yingchen-coding/when-rlhf-fails-quietly) · [agentic-misuse-benchmark](https://github.com/yingchen-coding/agentic-misuse-benchmark) · [safety-harness/simulator](https://github.com/yingchen-coding/safety-harness/tree/main/simulator) · [safety-harness/stress-testing](https://github.com/yingchen-coding/safety-harness/tree/main/stress-testing) · [safety-harness/release-gate](https://github.com/yingchen-coding/safety-harness/tree/main/release-gate) · [safety-harness/regression-suite](https://github.com/yingchen-coding/safety-harness/tree/main/regression-suite) · [safety-harness/incident-lab](https://github.com/yingchen-coding/safety-harness/tree/main/incident-lab)
 
 # Agentic Misuse Benchmark
 
@@ -20,7 +20,7 @@ In agentic deployments, these trajectory-level attacks represent the dominant th
 
 **This benchmark provides systematic evaluation of detection capabilities for realistic multi-turn threats.**
 
-> **Boundary Statement**: This benchmark measures detection capability. It **cannot be used to justify release readiness**. Benchmark scores are inputs to the release gate, not release decisions. Final authority lives in [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite).
+> **Boundary Statement**: This benchmark measures detection capability. It **cannot be used to justify release readiness**. Benchmark scores are inputs to the release gate, not release decisions. Final authority lives in [safety-harness/regression-suite](https://github.com/yingchen-coding/safety-harness/tree/main/regression-suite).
 
 ---
 
