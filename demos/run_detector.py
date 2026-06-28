@@ -8,9 +8,6 @@ Usage:
 """
 
 import argparse
-import json
-import sys
-from pathlib import Path
 
 
 # Mock detector implementations
@@ -175,11 +172,11 @@ def main():
     else:
         detector = IntentTrackerDetector()
 
-    print(f"=" * 60)
-    print(f"DETECTOR EVALUATION")
+    print("=" * 60)
+    print("DETECTOR EVALUATION")
     print(f"Detector: {args.detector}")
     print(f"Split: {args.split}")
-    print(f"=" * 60)
+    print("=" * 60)
 
     # Load data
     print("\nLoading evaluation data...")
@@ -195,17 +192,17 @@ def main():
     print("RESULTS")
     print(f"{'=' * 60}")
 
-    print(f"\n--- Overall Metrics ---")
+    print("\n--- Overall Metrics ---")
     print(f"Accuracy:  {results['accuracy']:.1%}")
     print(f"Precision: {results['precision']:.1%}")
     print(f"Recall:    {results['recall']:.1%}")
     print(f"F1 Score:  {results['f1']:.1%}")
 
-    print(f"\n--- Confusion Matrix ---")
+    print("\n--- Confusion Matrix ---")
     print(f"TP: {results['tp']:3d}  FP: {results['fp']:3d}")
     print(f"FN: {results['fn']:3d}  TN: {results['tn']:3d}")
 
-    print(f"\n--- By Category ---")
+    print("\n--- By Category ---")
     for category, stats in results["by_category"].items():
         cat_total = sum(stats.values())
         cat_acc = (stats["tp"] + stats["tn"]) / cat_total if cat_total > 0 else 0

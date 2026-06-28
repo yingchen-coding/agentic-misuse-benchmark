@@ -5,7 +5,6 @@ A simple ML baseline using sentence embeddings and logistic regression.
 """
 
 import numpy as np
-from typing import Optional
 
 from .base import BaseDetector, DetectionResult
 from scenarios.base import Turn

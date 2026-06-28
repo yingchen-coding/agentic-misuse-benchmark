@@ -1,0 +1,6 @@
+line-length = 100
+
+[lint.per-file-ignores]
+# Test modules insert the repo root on sys.path before importing the package under test,
+# so module-level imports legitimately follow that statement.
+"tests/*" = ["E402"]

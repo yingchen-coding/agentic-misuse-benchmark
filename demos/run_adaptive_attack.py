@@ -7,10 +7,7 @@ Usage:
 """
 
 import argparse
-import json
 import random
-import sys
-from pathlib import Path
 
 
 class MockIntentTracker:
@@ -160,11 +157,11 @@ def main():
     args = parser.parse_args()
     random.seed(args.seed)
 
-    print(f"=" * 60)
-    print(f"ADAPTIVE ATTACK EVALUATION")
+    print("=" * 60)
+    print("ADAPTIVE ATTACK EVALUATION")
     print(f"Detector: {args.detector}")
     print(f"Budget: {args.budget} attempts")
-    print(f"=" * 60)
+    print("=" * 60)
 
     # Initialize
     detector = MockIntentTracker()
@@ -178,13 +175,13 @@ def main():
     print("RESULTS")
     print(f"{'=' * 60}")
 
-    print(f"\n--- Attack Statistics ---")
+    print("\n--- Attack Statistics ---")
     print(f"Total Attempts: {results['total_attempts']}")
     print(f"Successful Bypasses: {results['successful_bypasses']}")
     print(f"Blocked: {results['blocked']}")
     print(f"Bypass Rate: {results['bypass_rate']:.1%}")
 
-    print(f"\n--- Learning Progress ---")
+    print("\n--- Learning Progress ---")
     # Show bypass rate over iterations
     window = 10
     for i in range(0, args.budget, window):
@@ -194,7 +191,7 @@ def main():
         bar = "#" * int(window_rate * 20)
         print(f"Iter {i:3d}-{i+window-1:3d}: {window_rate:.0%} {bar}")
 
-    print(f"\n--- Discovered Bypasses ---")
+    print("\n--- Discovered Bypasses ---")
     print(f"Unique successful patterns: {results['unique_successful']}")
 
     if results["successful_patterns"]:

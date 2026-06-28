@@ -14,11 +14,7 @@ Usage:
 
 import argparse
 import csv
-import json
-import sys
-from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 from scenarios import (
     get_all_scenarios,
@@ -145,7 +141,7 @@ def print_summary(metrics: BenchmarkMetrics, detector_name: str) -> None:
     print(f"Avg erosion:     {metrics.avg_policy_erosion:.3f}")
     print(f"Avg drift:       {metrics.avg_intent_drift:.3f}")
 
-    print(f"\nPer-category detection rates:")
+    print("\nPer-category detection rates:")
     for cat, rate in metrics.category_detection_rates.items():
         print(f"  {cat}: {rate*100:.1f}%")
 

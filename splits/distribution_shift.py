@@ -11,10 +11,9 @@ This module implements:
 4. Shift detection (monitor for distribution drift)
 """
 
-import json
 import hashlib
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Set
+from typing import List, Dict, Optional
 from datetime import datetime
 from enum import Enum
 
@@ -267,7 +266,7 @@ class DistributionShiftManager:
             print(f"WARNING: Accessing holdout set '{split_id}'!")
             print(f"  Accessor: {accessor}")
             print(f"  Purpose: {purpose}")
-            print(f"  This access has been logged for audit.")
+            print("  This access has been logged for audit.")
 
         # Return samples
         return [self.samples[sid] for sid in split.sample_ids if sid in self.samples]

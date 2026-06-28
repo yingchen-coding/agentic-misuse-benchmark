@@ -6,7 +6,6 @@ injection and attack signatures.
 """
 
 import re
-from typing import Optional
 
 from .base import BaseDetector, DetectionResult
 from scenarios.base import Turn
