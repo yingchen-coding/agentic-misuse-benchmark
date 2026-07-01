@@ -40,5 +40,3 @@ results/*.csv
 results/*.json
 !results/example_results.csv
 .claude/
-
-scripts/pr_review_check.sh
