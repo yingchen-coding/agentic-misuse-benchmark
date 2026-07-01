@@ -137,4 +137,4 @@ Date: 2026-01-30
 For scale-related questions:
 
 Ying Chen, Ph.D.
-blueoceanally@gmail.com <!-- agentguard-allow AL504 (intentional public maintainer contact) -->
+Open a GitHub issue for questions, reproducibility notes, or benchmark extension proposals.

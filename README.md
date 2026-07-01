@@ -345,8 +345,7 @@ It directly supports safeguards development for agentic LLM systems.
 
 ## Contact
 
-Ying Chen, Ph.D.
-blueoceanally@gmail.com <!-- agentguard-allow AL504 (intentional public maintainer contact) -->
+Open a GitHub issue for questions, reproducibility notes, or benchmark extension proposals.
 
 ---
 
