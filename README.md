@@ -394,3 +394,12 @@ MIT
 ## Related Writing
 
 - [Why Single-Turn Safety Benchmarks Systematically Underestimate Agentic Risk](https://yingchen-coding.github.io/safety-memos/)
+
+## Local Review Gate
+
+```bash
+scripts/pr_review_check.sh
+```
+
+This runs compile checks, tests, Ruff when available, secret scanning, and commit-history
+attribution checks. GitHub runs the same gate through the `PR Review Gate` workflow.
