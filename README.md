@@ -5,6 +5,8 @@
 [![CI](https://github.com/yingchen-coding/agentic-misuse-benchmark/actions/workflows/ci.yml/badge.svg)](https://github.com/yingchen-coding/agentic-misuse-benchmark/actions/workflows/ci.yml)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC%20BY--NC%204.0-lightgrey.svg)](LICENSE)
 
+![agentic-misuse-benchmark — a reproducible misuse benchmark](assets/demo.svg)
+
 > A trajectory-level benchmark for detecting prompt injection, policy erosion, intent drift, and coordinated misuse in agentic LLM systems.
 
 ## Motivation

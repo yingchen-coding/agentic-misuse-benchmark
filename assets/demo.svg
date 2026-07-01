@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="254" viewBox="0 0 800 254" role="img" aria-label="agentic-misuse-benchmark — a reproducible misuse benchmark">
+  <rect width="800" height="254" rx="10" fill="#0d1117" stroke="#30363d"/>
+  <rect width="800" height="40" rx="10" fill="#161b22"/>
+  <rect y="30" width="800" height="10" fill="#161b22"/>
+  <circle cx="18" cy="20" r="6" fill="#ff5f56"/><circle cx="38" cy="20" r="6" fill="#ffbd2e"/><circle cx="58" cy="20" r="6" fill="#27c93f"/>
+  <text x="400" y="24" fill="#8b949e" font-family="monospace" font-size="12" text-anchor="middle">agentic-misuse-benchmark — a reproducible misuse benchmark</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13.5">
+    <text x="22" y="58" fill="#e6edf3" xml:space="preserve">$ python run_benchmark.py --detector rules</text><text x="22" y="80" fill="#8b949e" xml:space="preserve">  25 misuse scenarios across 4 categories</text><text x="22" y="124" fill="#3fb950" xml:space="preserve">  detection rate  100.0%      false positives  0.0%</text><text x="22" y="146" fill="#8b949e" xml:space="preserve">  prompt-injection · policy-erosion · intent-drift · coordinated-misuse</text><text x="22" y="168" fill="#8b949e" xml:space="preserve">  avg policy-erosion 0.263 · avg intent-drift 0.398</text><text x="22" y="212" fill="#8b949e" xml:space="preserve">  # a reproducible harness — swap in your detector, compare honestly</text>
+  </g>
+</svg>
