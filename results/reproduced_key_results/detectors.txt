@@ -1,0 +1,4 @@
+Available detectors:
+  rules: Pattern-matching baseline detector
+  classifier: Embedding-based trajectory classifier
+  intent: Intent drift tracker

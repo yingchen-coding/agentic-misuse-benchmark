@@ -17,8 +17,8 @@ not just generic single-turn safety tests.
 - **Problem:** agentic misuse often emerges across turns, tools, and shifting intent.
 - **Method:** scenario families cover prompt injection, policy erosion, intent drift, and
   coordinated misuse, with detector comparisons and shifted/adaptive evaluation.
-- **Result:** the maintained workflow writes reproducible detector outputs and category checks
-  under `results/reproduced_*`.
+- **Result:** the maintained workflow writes reproducible detector outputs and category checks.
+  A committed report is available under [`results/reproduced_key_results/`](results/reproduced_key_results/).
 - **Reviewer path:** run `bash scripts/reproduce_key_results.sh`, inspect `results/`, then read
   `docs/threat_model.md`, `docs/EVAL_PROTOCOL.md`, and `docs/lifecycle_policy.md`.
 
