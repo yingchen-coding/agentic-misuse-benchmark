@@ -9,6 +9,19 @@
 
 > A trajectory-level benchmark for detecting prompt injection, policy erosion, intent drift, and coordinated misuse in agentic LLM systems.
 
+## Profile Evidence
+
+This repo supports the public profile claim that agentic misuse needs representative evaluation,
+not just generic single-turn safety tests.
+
+- **Problem:** agentic misuse often emerges across turns, tools, and shifting intent.
+- **Method:** scenario families cover prompt injection, policy erosion, intent drift, and
+  coordinated misuse, with detector comparisons and shifted/adaptive evaluation.
+- **Result:** the maintained workflow writes reproducible detector outputs and category checks
+  under `results/reproduced_*`.
+- **Reviewer path:** run `bash scripts/reproduce_key_results.sh`, inspect `results/`, then read
+  `docs/threat_model.md`, `docs/EVAL_PROTOCOL.md`, and `docs/lifecycle_policy.md`.
+
 ## Motivation
 
 Current LLM safety evaluation focuses on **single-turn classification**: given a prompt, is the response harmful? This approach systematically misses **multi-turn misuse patterns** where:
