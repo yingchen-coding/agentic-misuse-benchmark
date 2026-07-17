@@ -1,0 +1,71 @@
+{
+  "laundered": {
+    "items": 26,
+    "accuracy": {
+      "successes": 19,
+      "total": 26,
+      "value": 0.731,
+      "wilson_95_ci": [
+        0.539,
+        0.863
+      ]
+    },
+    "block_recall": {
+      "successes": 5,
+      "total": 12,
+      "value": 0.417,
+      "wilson_95_ci": [
+        0.193,
+        0.68
+      ]
+    },
+    "allow_recall": {
+      "successes": 14,
+      "total": 14,
+      "value": 1.0,
+      "wilson_95_ci": [
+        0.785,
+        1.0
+      ]
+    }
+  },
+  "raw": {
+    "items": 26,
+    "accuracy": {
+      "successes": 20,
+      "total": 26,
+      "value": 0.769,
+      "wilson_95_ci": [
+        0.579,
+        0.89
+      ]
+    },
+    "block_recall": {
+      "successes": 6,
+      "total": 12,
+      "value": 0.5,
+      "wilson_95_ci": [
+        0.254,
+        0.746
+      ]
+    },
+    "allow_recall": {
+      "successes": 14,
+      "total": 14,
+      "value": 1.0,
+      "wilson_95_ci": [
+        0.785,
+        1.0
+      ]
+    }
+  },
+  "disagreement_rate": {
+    "successes": 1,
+    "total": 26,
+    "value": 0.038,
+    "wilson_95_ci": [
+      0.007,
+      0.189
+    ]
+  }
+}

@@ -55,6 +55,71 @@ Policy erosion attacks work because each turn is plausibly benign in isolation. 
 
 ---
 
+## Research Extensions
+
+This repo also includes small, training-free research packets used to stress-test specific safety
+evaluation claims.
+
+### Inter-query misuse defense
+
+The inter-query audit asks whether the same detector improves when it can see accumulated session
+context instead of one isolated query at a time.
+
+```bash
+python analysis/inter_query_defense.py
+python analysis/inter_query_deep_audit.py
+python analysis/inter_query_expanded_audit.py
+python analysis/semantic_detector_audit.py
+```
+
+Committed reports:
+
+- [`results/inter_query_deep_audit.md`](results/inter_query_deep_audit.md)
+- [`results/inter_query_expanded_audit.md`](results/inter_query_expanded_audit.md)
+
+### Differential-harm jailbreak benchmark
+
+`metrics_differential.py` scores capability gain over a realistic baseline instead of treating
+non-refusal as success. The study packet is under
+[`experiment_results/differential_harm_study_packet/`](experiment_results/differential_harm_study_packet/).
+
+Current public pilot:
+
+- 30 safe proxy tasks across five families.
+- GPT-5.5 and GPT-5.6-terra crossed with four model conditions: 240 model-condition rows.
+- Deterministic independent adjudication confirms 240/240 zero-completion labels.
+- 0 successes at completion >= 0.5; exact one-sided 95% upper bound on success rate: 0.012.
+- 52 refusal-label disagreements, showing refusal is not a stable proxy for completion.
+
+Reproduce the adjudication summary:
+
+```bash
+python experiments/adjudicate_differential_harm_pilot.py
+python experiments/analyze_differential_harm_run_sheet.py --sheet experiment_results/differential_harm_study_packet/independent_adjudication_run_sheet.csv
+```
+
+### Weak trusted-monitor prompt-laundering probe
+
+The weak-monitor packet asks a smaller frozen model to allow/block provenance-labeled tool-action
+traces from raw actor text and from a laundered text view.
+
+```bash
+python experiments/trusted_monitoring_probe/score.py \
+  experiments/trusted_monitoring_probe/runs_gpt-5.4-mini.jsonl
+```
+
+Current result:
+
+- Raw: accuracy 20/26 = 0.769, block recall 6/12 = 0.500, allow recall 14/14 = 1.000.
+- Laundered: accuracy 19/26 = 0.731, block recall 5/12 = 0.417, allow recall 14/14 = 1.000.
+- The score report includes Wilson 95% confidence intervals:
+  [`experiment_results/trusted_monitoring_probe.md`](experiment_results/trusted_monitoring_probe.md).
+
+Boundary: these packets are public-safe proxy evaluations. They are not release decisions, do not
+use private data, and do not claim real-world harmful capability enablement.
+
+---
+
 ## Failure Taxonomy
 
 | Category | Attack Pattern | Detection Challenge |

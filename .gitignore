@@ -1,6 +1,9 @@
 # Python
 __pycache__/
+**/__pycache__/
 *.py[cod]
+logs_codex*/
+**/logs_codex*/
 *$py.class
 *.so
 .Python
