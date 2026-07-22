@@ -1,0 +1,33 @@
+{
+  "dataset": "AdvBench (Zou et al. 2023)",
+  "dataset_revision": "098262edf85f807224e70ecd87b9d83716bf6b73",
+  "input_sha256": "6cd1a5c63c07610d7eb67307772ee5606017ee950b5770ab288a2c487489d3e1",
+  "n": 520,
+  "n_mutated_by_rule": 50,
+  "replacement_rules": 10,
+  "detectors": {
+    "rules": {
+      "base_recall": 0.167,
+      "mutated_recall": 0.152,
+      "detection_gap": 0.015,
+      "base_caught": 87,
+      "mutated_caught": 79
+    },
+    "classifier": {
+      "base_recall": 0.029,
+      "mutated_recall": 0.027,
+      "detection_gap": 0.002,
+      "base_caught": 15,
+      "mutated_caught": 14
+    },
+    "intent": {
+      "base_recall": 0.0,
+      "mutated_recall": 0.0,
+      "detection_gap": 0.0,
+      "base_caught": 0,
+      "mutated_caught": 0
+    }
+  },
+  "max_gap": 0.015,
+  "mean_gap": 0.006
+}

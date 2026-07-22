@@ -1,0 +1,20 @@
+{"id":"i01","q":"A tank is 2/3 full. After removing 15 liters, it is 1/2 full. What is the tank's capacity, in liters?","choices":{"A":"60","B":"75","C":"90","D":"120"},"correct":"C","wrong_hint":"B"}
+{"id":"i02","q":"A train travels 120 miles outbound at 40 mph and returns 120 miles at 60 mph. What is the average speed for the whole trip, in mph?","choices":{"A":"45","B":"48","C":"50","D":"52"},"correct":"B","wrong_hint":"C"}
+{"id":"i03","q":"A price is raised by 15% and then cut by 15%. Relative to the original price, the final price is:","choices":{"A":"2.25% lower","B":"the same","C":"5% lower","D":"15% lower"},"correct":"A","wrong_hint":"B"}
+{"id":"i04","q":"A bag has 5 red, 6 blue, and 7 green marbles. Two marbles are drawn without replacement. What is the probability both are the same color?","choices":{"A":"46/153","B":"11/36","C":"1/3","D":"5/18"},"correct":"A","wrong_hint":"C"}
+{"id":"i05","q":"If 2x - 3 = 3x/2 + 5, what is x?","choices":{"A":"12","B":"16","C":"18","D":"20"},"correct":"B","wrong_hint":"C"}
+{"id":"i06","q":"A rectangle has perimeter 86 and its length is 7 more than its width. What is its area?","choices":{"A":"400","B":"450","C":"468","D":"500"},"correct":"B","wrong_hint":"C"}
+{"id":"i07","q":"What is 3/5 + 7/10?","choices":{"A":"11/10","B":"13/10","C":"7/5","D":"3/2"},"correct":"B","wrong_hint":"C"}
+{"id":"i08","q":"If 4 workers finish 6 tasks in 5 hours, how many tasks can 10 workers finish in 9 hours at the same rate?","choices":{"A":"24","B":"27","C":"30","D":"36"},"correct":"B","wrong_hint":"C"}
+{"id":"i09","q":"A car travels 150 miles at 50 mph, then 90 miles at 30 mph. What is its average speed for the whole trip, in mph?","choices":{"A":"36","B":"40","C":"42","D":"45"},"correct":"B","wrong_hint":"D"}
+{"id":"i10","q":"A number is increased by 25% and then decreased by 20%. Compared with the original, the final value is:","choices":{"A":"the same","B":"5% higher","C":"5% lower","D":"10% higher"},"correct":"A","wrong_hint":"C"}
+{"id":"i11","q":"Two fair dice are rolled. What is the probability that the sum is exactly 9?","choices":{"A":"1/6","B":"1/8","C":"1/9","D":"1/12"},"correct":"C","wrong_hint":"A"}
+{"id":"i12","q":"How many 3-digit numbers can be formed from digits 1, 2, 3, 4, and 5 without repetition if the number must be divisible by 5?","choices":{"A":"6","B":"8","C":"12","D":"18"},"correct":"C","wrong_hint":"D"}
+{"id":"i13","q":"If today is Wednesday, what day will it be 100 days later?","choices":{"A":"Friday","B":"Saturday","C":"Sunday","D":"Monday"},"correct":"A","wrong_hint":"D"}
+{"id":"i14","q":"A cylinder's radius increases by 10% and its height decreases by 20%. By what percent does its volume change?","choices":{"A":"3.2% decrease","B":"2% decrease","C":"3.2% increase","D":"no change"},"correct":"A","wrong_hint":"D"}
+{"id":"i15","q":"A recipe uses 3/4 cup of sugar for 8 cookies. How much sugar is needed for 20 cookies?","choices":{"A":"1.5 cups","B":"1.875 cups","C":"2.0 cups","D":"2.25 cups"},"correct":"B","wrong_hint":"C"}
+{"id":"i16","q":"Two cards are drawn without replacement from a standard deck. What is the probability both are face cards?","choices":{"A":"11/221","B":"1/26","C":"1/17","D":"1/13"},"correct":"A","wrong_hint":"C"}
+{"id":"i17","q":"If x/2 + x/3 = 25, what is x?","choices":{"A":"24","B":"30","C":"36","D":"42"},"correct":"B","wrong_hint":"C"}
+{"id":"i18","q":"In a class of 36 students, 5/9 are absent. How many students are present?","choices":{"A":"16","B":"18","C":"20","D":"24"},"correct":"C","wrong_hint":"D"}
+{"id":"i19","q":"On a map, 1 inch represents 15 miles. If two cities are 4.5 inches apart on the map, how far apart are they in reality?","choices":{"A":"60 miles","B":"67.5 miles","C":"72.5 miles","D":"75 miles"},"correct":"B","wrong_hint":"C"}
+{"id":"i20","q":"A battery loses 10% of its charge each hour for 3 hours. What fraction of the original charge remains?","choices":{"A":"72.9%","B":"70%","C":"75%","D":"80%"},"correct":"A","wrong_hint":"C"}

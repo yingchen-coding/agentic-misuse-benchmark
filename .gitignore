@@ -27,6 +27,7 @@ wheels/
 venv/
 ENV/
 env/
+.venv*/
 
 # IDE
 .idea/
@@ -44,3 +45,8 @@ results/*.json
 !results/example_results.csv
 .claude/
 scripts/pr_review_check.sh
+analysis/results/llm_judge_model_tier.json
+analysis/results/reasoning_monitor_safemt.json
+experiment_results/differential_harm_study_packet/results_sonnet_pilot.json
+experiment_results/differential_harm_study_packet/runs_sonnet_default.jsonl
+experiment_results/differential_harm_study_packet/runs_sonnet_jailbreak_family.jsonl

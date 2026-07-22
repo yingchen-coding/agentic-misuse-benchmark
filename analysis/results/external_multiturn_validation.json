@@ -1,0 +1,32 @@
+{
+  "dataset": "tom-gibbs/multi-turn_jailbreak_attack_datasets (HuggingFace)",
+  "dataset_revision": "e3b30257c4d6be5438ea19f0989ac82c24234fe4",
+  "harmful_input_sha256": "9b84edb9ebbf695b4884a897284022c4f75e382a577359bd031c6ec902a45f17",
+  "benign_input_sha256": "4efb90f0b4c8d54ad66353acd89bf4008413c80b9bf45ddc812b1f36847c7398",
+  "sampling_seed": 0,
+  "n_harmful": 400,
+  "n_benign": 400,
+  "detectors": {
+    "rules": {
+      "single_query_recall": 0.07,
+      "inter_query_recall": 0.07,
+      "recall_gain": 0.0,
+      "single_query_fpr": 0.0,
+      "inter_query_fpr": 0.0
+    },
+    "classifier": {
+      "single_query_recall": 0.025,
+      "inter_query_recall": 0.025,
+      "recall_gain": 0.0,
+      "single_query_fpr": 0.0,
+      "inter_query_fpr": 0.0
+    },
+    "intent": {
+      "single_query_recall": 0.0,
+      "inter_query_recall": 1.0,
+      "recall_gain": 1.0,
+      "single_query_fpr": 0.0,
+      "inter_query_fpr": 1.0
+    }
+  }
+}

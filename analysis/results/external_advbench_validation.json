@@ -1,0 +1,27 @@
+{
+  "dataset": "AdvBench (Zou et al. 2023)",
+  "dataset_revision": "098262edf85f807224e70ecd87b9d83716bf6b73",
+  "input_sha256": "6cd1a5c63c07610d7eb67307772ee5606017ee950b5770ab288a2c487489d3e1",
+  "n_attacks": 520,
+  "n_benign": 73,
+  "detectors": {
+    "rules": {
+      "recall": 0.167,
+      "fpr": 0.0,
+      "caught": 87,
+      "false_positives": 0
+    },
+    "classifier": {
+      "recall": 0.029,
+      "fpr": 0.014,
+      "caught": 15,
+      "false_positives": 1
+    },
+    "intent": {
+      "recall": 0.0,
+      "fpr": 0.0,
+      "caught": 0,
+      "false_positives": 0
+    }
+  }
+}

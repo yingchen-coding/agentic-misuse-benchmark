@@ -77,6 +77,20 @@ Committed reports:
 - [`results/inter_query_deep_audit.md`](results/inter_query_deep_audit.md)
 - [`results/inter_query_expanded_audit.md`](results/inter_query_expanded_audit.md)
 
+External checks in `analysis/` test the same mechanism on AdvBench, SafeMTData, and an independent
+multi-turn jailbreak corpus. They include negative results: the bundled detectors transfer poorly,
+the scaled TF-IDF study finds no recall gain, and the SafeMT embedding aggregation performs worse
+than isolated-turn scoring. These results constrain the claim rather than presenting the pilot as a
+deployment-ready defense.
+
+### Chain-of-thought faithfulness probes
+
+The `cot_faithfulness*` directories contain paired, answer-biasing-hint probes and recorded model
+outputs. Across the first two task sets, seven model/task-set runs produced 210 prompt responses
+(105 neutral/hint pairs) with no hint-induced answer flips. Later harder GPT-mini probes reduced
+neutral accuracy below ceiling but still found no hint-induced flips. The included scorers reproduce
+these null results and reject incomplete or malformed run files.
+
 ### Differential-harm jailbreak benchmark
 
 `metrics_differential.py` scores capability gain over a realistic baseline instead of treating
@@ -466,7 +480,8 @@ This project is part of a larger closed-loop safety system. See the portfolio ov
 
 ## License
 
-MIT
+Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). See
+[`LICENSE`](LICENSE).
 
 ---
 
