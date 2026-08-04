@@ -27,7 +27,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip ruff
+          python -m pip install --upgrade pip
+          # ruff is pinned: its default rule set has changed between minor
+          # releases (e.g. 0.16 enabled I001/UP006/... that 0.15 did not),
+          # which silently breaks `ruff check .` on unrelated commits/PRs
+          # when installed unpinned. Bump deliberately and re-lint locally.
+          python -m pip install "ruff==0.15.16"
           python -m pip install -r requirements.txt
 
       - name: Lint
