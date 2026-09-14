@@ -39,10 +39,26 @@ jobs:
         run: ruff check .
 
       - name: Compile Python modules
-        run: python -m compileall -q analysis attackers demos detectors oracles scenarios splits metrics.py run_benchmark.py
+        run: python -m compileall -q analysis attackers demos detectors oracles scenarios splits metrics.py run_benchmark.py readiness_gate.py
 
       - name: Run tests
         run: pytest -q
+
+      - name: Readiness gate passes the rules detector
+        run: python readiness_gate.py --detector rules
+
+      - name: Readiness gate blocks the classifier (known-fail, expects exit 2)
+        run: |
+          set +e
+          python readiness_gate.py --detector classifier
+          status=$?
+          set -e
+          test "$status" -eq 2
+
+      - name: Committed label-agreement results reproduce
+        run: |
+          python analysis/label_agreement.py --output /tmp/label_agreement.json
+          diff /tmp/label_agreement.json analysis/results/label_agreement.json
 
       - name: Run maintained reproduction workflow
         run: OUTPUT_DIR=/tmp/agentic-misuse-reproduced bash scripts/reproduce_key_results.sh
