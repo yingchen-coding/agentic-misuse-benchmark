@@ -107,7 +107,7 @@ class IntentTracker(BaseDetector):
         if turn.role not in self.SCREENED_ROLES:
             return DetectionResult(detected=False, confidence=0.0)
 
-        # Get initial topics from first user turn
+        # Get initial topics from first screened turn
         initial_topics = set()
         for h in history:
             if h.role in self.SCREENED_ROLES:

@@ -79,6 +79,22 @@ def test_human_labels_with_no_matching_rows_fail_loudly(tmp_path):
                             csv_path)
 
 
+def test_human_labels_with_a_duplicate_row_fail_loudly(tmp_path):
+    csv_path = tmp_path / "human.csv"
+    csv_path.write_text("task_id,condition,model_or_baseline,refused\nt1,c,m,true\nt1,c,m,false\n")
+    with pytest.raises(ValueError, match="twice"):
+        attach_human_labels([{"task_id": "t1", "condition": "c", "model_or_baseline": "m"}],
+                            csv_path)
+
+
+def test_human_labels_missing_a_column_fail_loudly(tmp_path):
+    csv_path = tmp_path / "human.csv"
+    csv_path.write_text("task_id,condition,refused\nt1,c,true\n")
+    with pytest.raises(ValueError, match="model_or_baseline"):
+        attach_human_labels([{"task_id": "t1", "condition": "c", "model_or_baseline": "m"}],
+                            csv_path)
+
+
 def test_recorded_pilot_reproduces_its_disagreement_count():
     report = run(DEFAULT_DETAILS)
     result = report["self_vs_adjudicator"]

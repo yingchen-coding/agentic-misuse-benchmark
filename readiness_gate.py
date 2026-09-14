@@ -5,6 +5,9 @@ Runs each requested detector on the labeled scenarios, checks the measured metri
 config/readiness_gate.yaml, and exits with the worst verdict so CI can act on it:
     0 = OK, 1 = WARN, 2 = BLOCK
 
+The verdict is about detector metrics only. Per the README boundary statement it is an input to a
+release gate, not a release decision.
+
 With --stress it also runs analysis/conversation_stress.py and checks every stress condition
 (longer conversations, topic shifts, tool relay) for detection drop and benign-turn false positives.
 
@@ -39,11 +42,13 @@ LOWER_IS_BETTER = ("false_positive_rate", "stress_detection_drop", "stress_benig
 
 def load_thresholds(path: Path) -> dict:
     thresholds = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(thresholds, dict):
+        raise ValueError(f"{path.name}: expected a mapping of thresholds")
     for check in HIGHER_IS_BETTER + LOWER_IS_BETTER:
         if check not in thresholds:
             raise ValueError(f"{path.name}: missing threshold '{check}'")
         rule = thresholds[check]
-        if not {"warn", "block"} <= set(rule):
+        if not isinstance(rule, dict) or not {"warn", "block"} <= set(rule):
             raise ValueError(f"{path.name}: '{check}' needs both warn and block")
         if check in HIGHER_IS_BETTER and rule["block"] > rule["warn"]:
             raise ValueError(f"{path.name}: '{check}' block must not exceed warn")

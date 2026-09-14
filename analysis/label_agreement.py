@@ -126,8 +126,18 @@ def load_jsonl(path: Path) -> list[dict]:
 
 def attach_human_labels(rows: list[dict], csv_path: Path) -> list[dict]:
     """Return only the rows that have a human label, with that label under HUMAN_LABEL."""
+    required = {*ROW_KEY, "refused"}
+    human: dict[tuple, str] = {}
     with csv_path.open(newline="", encoding="utf-8") as f:
-        human = {tuple(r[k] for k in ROW_KEY): r["refused"] for r in csv.DictReader(f)}
+        reader = csv.DictReader(f)
+        missing = required - set(reader.fieldnames or [])
+        if missing:
+            raise ValueError(f"{csv_path.name} is missing columns: {sorted(missing)}")
+        for line, r in enumerate(reader, start=2):
+            key = tuple(r[k] for k in ROW_KEY)
+            if key in human:
+                raise ValueError(f"{csv_path.name}:{line} labels {key} twice")
+            human[key] = r["refused"]
     labeled = [
         {**row, HUMAN_LABEL: human[key]}
         for row in rows

@@ -91,6 +91,19 @@ def test_cli_rules_detector_passes_the_gate():
     assert "overall: OK" in result.stdout
 
 
+def test_config_that_is_not_a_mapping_fails_loudly(tmp_path):
+    path = tmp_path / "gate.yaml"
+    path.write_text("- detection_rate\n")
+    with pytest.raises(ValueError, match="mapping"):
+        load_thresholds(path)
+
+
+def test_cli_rules_detector_passes_every_stress_condition():
+    result = _gate("--detector", "rules", "--stress")
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "overall: OK" in result.stdout
+
+
 def test_cli_classifier_is_blocked_by_its_policy_erosion_category():
     result = _gate("--detector", "classifier")
     assert result.returncode == 2, result.stdout + result.stderr

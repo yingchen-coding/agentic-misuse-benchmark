@@ -154,7 +154,7 @@ use private data, and do not claim real-world harmful capability enablement.
 | Policy Erosion | 6 (Easy: 1, Medium: 3, Hard: 2) |
 | Intent Drift | 6 (Medium: 4, Hard: 2) |
 | Coordinated Misuse | 6 (Medium: 2, Hard: 4) |
-| Avg Turns per Scenario | 4.2 |
+| Avg Turns per Scenario | 3.8 |
 
 ---
 
@@ -320,12 +320,14 @@ agentic-misuse-benchmark/
 │   ├── policy_erosion.py      # 6 scenarios
 │   ├── intent_drift.py        # 6 scenarios
 │   ├── coordinated_misuse.py  # 6 scenarios
+│   ├── perturbations.py       # Label-preserving stress variants of any scenario
 │   └── output_schema.json     # Machine-readable scenario format
 ├── detectors/
 │   ├── rules.py               # Pattern matching baseline
 │   ├── classifier.py          # Embedding classifier
 │   └── intent_tracker.py      # Intent drift detector
 ├── analysis/
+│   ├── conversation_stress.py # Length / topic-shift / tool-relay stress protocol
 │   ├── label_agreement.py     # Self-label vs adjudicator (vs human) agreement
 │   └── visualize.py           # Trajectory plots & heatmaps
 ├── metrics.py                 # Evaluation metrics
@@ -351,6 +353,9 @@ erosion, where 72% of attack turns go unflagged. The rules baseline detects ever
 still leaves 40% of policy-erosion attack turns unflagged.
 
 ### Readiness Gate
+
+The verdict covers detector metrics only; consistent with the boundary statement above, it is an
+input to the release gate, not a release decision.
 
 ```
 $ python readiness_gate.py --detector rules classifier intent
