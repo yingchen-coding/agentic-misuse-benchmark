@@ -56,44 +56,55 @@ def audit() -> dict:
 
     for det_name in list_detectors():
         detector = get_detector(det_name)
-        flagged_traces = 0
-        flagged_turns = 0
-        total_turns = 0
-        per_trace = {}
-        for trace_name, turns in traces.items():
-            history: list[Turn] = []
-            trace_flags = 0
-            for turn in turns:
-                result = detector.detect_turn(turn, history)
-                history.append(turn)
-                total_turns += 1
-                if result.detected:
-                    trace_flags += 1
-                    flagged_turns += 1
-            per_trace[trace_name] = {"turns": len(turns), "flagged": trace_flags}
-            if trace_flags:
-                flagged_traces += 1
-
-        report["detectors"][det_name] = {
-            "trace_fpr": round(flagged_traces / len(traces), 3) if traces else 0.0,
-            "query_fpr": round(flagged_turns / total_turns, 3) if total_turns else 0.0,
-            "flagged_traces": flagged_traces,
-            "flagged_turns": flagged_turns,
-            "total_turns": total_turns,
-            "per_trace": per_trace,
-        }
+        per_turn = _fpr_stats(traces, lambda turns: _per_turn_flags(detector, turns))
+        # run_benchmark scores scenarios with detect_trajectory, which uses different weights and
+        # thresholds than detect_turn, so report the FPR of the path the benchmark actually uses.
+        trajectory = _fpr_stats(
+            traces, lambda turns: [r.detected for r in detector.detect_trajectory(turns)])
+        report["detectors"][det_name] = {**per_turn, "trajectory": trajectory}
     return report
+
+
+def _per_turn_flags(detector, turns: list[Turn]) -> list[bool]:
+    history: list[Turn] = []
+    flags = []
+    for turn in turns:
+        flags.append(detector.detect_turn(turn, history).detected)
+        history.append(turn)
+    return flags
+
+
+def _fpr_stats(traces: dict[str, list[Turn]], flag_turns) -> dict:
+    flagged_traces = flagged_turns = total_turns = 0
+    per_trace = {}
+    for trace_name, turns in traces.items():
+        trace_flags = int(sum(bool(flag) for flag in flag_turns(turns)))
+        total_turns += len(turns)
+        flagged_turns += trace_flags
+        flagged_traces += bool(trace_flags)
+        per_trace[trace_name] = {"turns": len(turns), "flagged": trace_flags}
+    return {
+        "trace_fpr": round(flagged_traces / len(traces), 3) if traces else 0.0,
+        "query_fpr": round(flagged_turns / total_turns, 3) if total_turns else 0.0,
+        "flagged_traces": flagged_traces,
+        "flagged_turns": flagged_turns,
+        "total_turns": total_turns,
+        "per_trace": per_trace,
+    }
 
 
 def main() -> int:
     report = audit()
     print(f"{report['n_traces']} hard-negative traces, {report['total_turns']} total turns\n")
-    for name, r in report["detectors"].items():
-        print(f"{name:12s} trace_fpr={r['trace_fpr']:.3f} ({r['flagged_traces']}/{report['n_traces']} traces) "
-              f"query_fpr={r['query_fpr']:.3f} ({r['flagged_turns']}/{r['total_turns']} turns)")
-        for trace, v in r["per_trace"].items():
-            if v["flagged"]:
-                print(f"    {trace}: {v['flagged']}/{v['turns']} turns flagged")
+    for name, detector_report in report["detectors"].items():
+        for mode, r in (("detect_turn", detector_report),
+                        ("trajectory", detector_report["trajectory"])):
+            print(f"{name:12s} {mode:12s} trace_fpr={r['trace_fpr']:.3f} "
+                  f"({r['flagged_traces']}/{report['n_traces']} traces) "
+                  f"query_fpr={r['query_fpr']:.3f} ({r['flagged_turns']}/{r['total_turns']} turns)")
+            for trace, v in r["per_trace"].items():
+                if v["flagged"]:
+                    print(f"    {trace}: {v['flagged']}/{v['turns']} turns flagged")
 
     out = HERE / "results" / "hard_negative_audit.json"
     out.parent.mkdir(exist_ok=True)
