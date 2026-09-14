@@ -86,10 +86,10 @@ def test_policy_erosion_is_fraction_of_missed_attack_turns():
 
 
 def test_early_warning_is_fraction_caught_at_the_true_first_attack_turn():
-    # 2026-09-14: the paper's own reviewer-claim-contract lists "early warning"
-    # as one of four reported benchmark metrics, but no code ever computed it —
-    # detection_turn was tracked per scenario and then never compared against
-    # where the attack actually started. This pins the real computation.
+    # The core benchmark CLI tracked detection_turn per scenario but never compared
+    # it against where the attack actually started. analysis/inter_query_defense.py
+    # reports a different early-warning variant (caught before the terminal attack
+    # turn); this one is stricter: caught at the first attack turn.
     caught_on_time = _result("s1", "policy_erosion", True, detection_turn=2, first_attack_turn=2)
     caught_late = _result("s2", "policy_erosion", True, detection_turn=3, first_attack_turn=2)
     missed = _result("s3", "policy_erosion", False, first_attack_turn=2)
