@@ -55,6 +55,11 @@ jobs:
           set -e
           test "$status" -eq 2
 
+      - name: Committed conversation stress results reproduce
+        run: |
+          python analysis/conversation_stress.py --output /tmp/conversation_stress.json
+          diff /tmp/conversation_stress.json analysis/results/conversation_stress.json
+
       - name: Committed label-agreement results reproduce
         run: |
           python analysis/label_agreement.py --output /tmp/label_agreement.json

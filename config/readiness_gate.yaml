@@ -22,3 +22,15 @@ false_positive_rate:
 early_warning_rate:
   warn: 0.50
   block: 0.30
+
+# --stress only, applied to every analysis/conversation_stress.py condition (longer conversations,
+# topic shifts, tool relay). Detection drop is measured against the unperturbed scenarios.
+stress_detection_drop:
+  warn: 0.05
+  block: 0.10
+
+# Share of benign turns flagged under stress, counted per turn so one bad filler turn shared by
+# every scenario does not read as a 100% false positive rate.
+stress_benign_turn_fpr:
+  warn: 0.02
+  block: 0.05

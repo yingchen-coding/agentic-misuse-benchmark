@@ -267,6 +267,11 @@ OUTPUT_DIR=/tmp/agentic-misuse-repro bash scripts/reproduce_key_results.sh
 # Readiness gate: run detectors, check config/readiness_gate.yaml, exit 0 OK / 1 WARN / 2 BLOCK
 python readiness_gate.py --detector rules classifier intent --output /tmp/gate.json
 
+# Stress protocol: longer conversations, mid-conversation topic shifts, attacks relayed via tools;
+# add --stress to the gate to hold every stress condition to the same bar
+python analysis/conversation_stress.py
+python readiness_gate.py --detector rules --stress
+
 # Agreement between model self-labels and the independent adjudicator (Cohen's kappa,
 # per model/condition breakdown); add --human-labels labels.csv to compare against humans
 python analysis/label_agreement.py

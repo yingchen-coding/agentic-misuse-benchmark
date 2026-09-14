@@ -49,6 +49,28 @@ def test_false_positive_rate_is_an_upper_bound():
     assert evaluate(_metrics(fpr=0.06), THRESHOLDS)["verdict"] == "BLOCK"
 
 
+def _stress_row(drop=0.0, turn_fpr=0.0):
+    return {"detection_drop": drop, "benign_turn_fpr": turn_fpr}
+
+
+def test_stress_conditions_block_on_detection_drop_and_skip_baseline():
+    stress = {"baseline": _stress_row(drop=0.9), "tool_relay": _stress_row(drop=0.84)}
+    result = evaluate(_metrics(), THRESHOLDS, stress)
+    assert result["verdict"] == "BLOCK"
+    assert [r["check"] for r in result["reasons"]] == [
+        "stress[tool_relay] detection_drop 0.840 > 0.1"]
+    assert result["stress"] == stress
+
+
+def test_stress_benign_turn_fpr_between_warn_and_block_is_warn():
+    result = evaluate(_metrics(), THRESHOLDS, {"extended_length:28": _stress_row(turn_fpr=0.03)})
+    assert result["verdict"] == "WARN"
+
+
+def test_without_stress_the_report_has_no_stress_section():
+    assert "stress" not in evaluate(_metrics(), THRESHOLDS)
+
+
 def test_config_missing_a_check_fails_loudly(tmp_path):
     path = tmp_path / "gate.yaml"
     path.write_text("detection_rate: {warn: 0.9, block: 0.8}\n")
