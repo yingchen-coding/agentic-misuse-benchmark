@@ -112,6 +112,7 @@ class ScenarioResult:
     intent_drift_score: float
     detector_name: str
     raw_scores: list[float] = field(default_factory=list)  # Per-turn scores
+    first_attack_turn: Optional[int] = None  # Ground-truth: earliest turn labeled is_attack
 
     def to_dict(self) -> dict:
         return {
@@ -123,7 +124,8 @@ class ScenarioResult:
             'false_positive': int(self.false_positive),
             'policy_erosion_score': round(self.policy_erosion_score, 3),
             'intent_drift_score': round(self.intent_drift_score, 3),
-            'detector_name': self.detector_name
+            'detector_name': self.detector_name,
+            'first_attack_turn': self.first_attack_turn
         }
 
 

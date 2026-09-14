@@ -65,6 +65,10 @@ def test_cli_writes_csv_output(tmp_path: Path) -> None:
         rows = list(csv.DictReader(f))
     assert len(rows) == 25
     assert {"scenario_id", "category", "detector_name", "detected"} <= set(rows[0])
+    # 2026-09-14 real bug: adding first_attack_turn to ScenarioResult.to_dict()
+    # without adding it to save_results' DictWriter fieldnames crashed the CLI
+    # on every real run (ValueError: dict contains fields not in fieldnames).
+    assert "first_attack_turn" in rows[0]
 
 
 def test_reproduction_script_runs_to_temp_output(tmp_path: Path) -> None:

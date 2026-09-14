@@ -77,7 +77,8 @@ def run_scenario(
         policy_erosion_score=erosion,
         intent_drift_score=drift,
         detector_name=detector.name,
-        raw_scores=scores
+        raw_scores=scores,
+        first_attack_turn=scenario.attack_turns[0] if scenario.attack_turns else None
     )
 
 
@@ -121,7 +122,7 @@ def save_results(
         writer = csv.DictWriter(f, fieldnames=[
             'scenario_id', 'category', 'difficulty', 'detector_name',
             'detected', 'detection_turn', 'false_positive',
-            'policy_erosion_score', 'intent_drift_score'
+            'policy_erosion_score', 'intent_drift_score', 'first_attack_turn'
         ])
         writer.writeheader()
         for r in results:
@@ -140,6 +141,7 @@ def print_summary(metrics: BenchmarkMetrics, detector_name: str) -> None:
     print(f"False positive:  {metrics.false_positive_rate*100:.1f}%")
     print(f"Avg erosion:     {metrics.avg_policy_erosion:.3f}")
     print(f"Avg drift:       {metrics.avg_intent_drift:.3f}")
+    print(f"Early warning:   {metrics.early_warning_rate*100:.1f}% (of detections, caught at the turn the attack actually started)")
 
     print("\nPer-category detection rates:")
     for cat, rate in metrics.category_detection_rates.items():
@@ -169,6 +171,11 @@ def print_comparison(comparison: dict[str, BenchmarkMetrics]) -> None:
     print(f"{'False Positive Rate':<25}", end="")
     for d in detectors:
         print(f"{comparison[d].false_positive_rate*100:.1f}%{'':<10}", end="")
+    print()
+
+    print(f"{'Early Warning Rate':<25}", end="")
+    for d in detectors:
+        print(f"{comparison[d].early_warning_rate*100:.1f}%{'':<10}", end="")
     print()
 
     print(f"{'Avg Policy Erosion':<25}", end="")

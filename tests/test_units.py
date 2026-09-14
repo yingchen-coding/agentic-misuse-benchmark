@@ -15,19 +15,25 @@ from detectors.rules import RuleBasedDetector
 from metrics import (
     aggregate_metrics,
     compute_detection_rate,
+    compute_early_warning,
     compute_false_positive_rate,
     compute_intent_drift,
     compute_policy_erosion,
 )
+from run_benchmark import run_scenario
 from scenarios.base import Difficulty, MisuseCategory, Scenario, ScenarioResult, Turn
 
 
-def _result(scenario_id, category, detected, false_positive=False, erosion=0.0, drift=0.0):
+def _result(scenario_id, category, detected, false_positive=False, erosion=0.0, drift=0.0,
+            detection_turn=None, first_attack_turn=None):
+    if detected and detection_turn is None:
+        detection_turn = 1
     return ScenarioResult(
         scenario_id=scenario_id, category=category, difficulty="medium",
-        detected=detected, detection_turn=1 if detected else None,
+        detected=detected, detection_turn=detection_turn,
         false_positive=false_positive, policy_erosion_score=erosion,
         intent_drift_score=drift, detector_name="rules",
+        first_attack_turn=first_attack_turn,
     )
 
 
@@ -77,6 +83,30 @@ def test_policy_erosion_is_fraction_of_missed_attack_turns():
     assert compute_policy_erosion(scn, detection) == 0.5
     # all attack turns caught -> no erosion
     assert compute_policy_erosion(scn, [False, True, False, True]) == 0.0
+
+
+def test_early_warning_is_fraction_caught_at_the_true_first_attack_turn():
+    # 2026-09-14: the paper's own reviewer-claim-contract lists "early warning"
+    # as one of four reported benchmark metrics, but no code ever computed it —
+    # detection_turn was tracked per scenario and then never compared against
+    # where the attack actually started. This pins the real computation.
+    caught_on_time = _result("s1", "policy_erosion", True, detection_turn=2, first_attack_turn=2)
+    caught_late = _result("s2", "policy_erosion", True, detection_turn=3, first_attack_turn=2)
+    missed = _result("s3", "policy_erosion", False, first_attack_turn=2)
+    assert compute_early_warning([caught_on_time]) == 1.0
+    assert compute_early_warning([caught_late]) == 0.0
+    assert compute_early_warning([caught_on_time, caught_late]) == 0.5
+    # a miss has no detection_turn to compare — excluded, not counted as late
+    assert compute_early_warning([missed]) == 0.0
+    assert compute_early_warning([caught_on_time, missed]) == 1.0
+    assert compute_early_warning([]) == 0.0
+
+
+def test_run_scenario_records_the_ground_truth_first_attack_turn():
+    scn = _scenario_with_attacks(attack_turn_indices={2, 3}, n_turns=4)
+    detector = RuleBasedDetector()
+    result = run_scenario(scn, detector)
+    assert result.first_attack_turn == 2
 
 
 def test_intent_drift_measures_increase_from_first_to_second_half():
