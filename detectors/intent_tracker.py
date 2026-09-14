@@ -104,13 +104,13 @@ class IntentTracker(BaseDetector):
 
     def detect_turn(self, turn: Turn, history: list[Turn]) -> DetectionResult:
         """Detect intent drift relative to conversation start."""
-        if turn.role != "user":
+        if turn.role not in self.SCREENED_ROLES:
             return DetectionResult(detected=False, confidence=0.0)
 
         # Get initial topics from first user turn
         initial_topics = set()
         for h in history:
-            if h.role == "user":
+            if h.role in self.SCREENED_ROLES:
                 initial_topics = self._get_topics(h.content)
                 break
 
@@ -149,7 +149,7 @@ class IntentTracker(BaseDetector):
         max_drift = 0.0
 
         for i, turn in enumerate(turns):
-            if turn.role != "user":
+            if turn.role not in self.SCREENED_ROLES:
                 results.append(DetectionResult(detected=False, confidence=0.0))
                 continue
 

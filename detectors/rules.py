@@ -105,7 +105,7 @@ class RuleBasedDetector(BaseDetector):
 
     def detect_turn(self, turn: Turn, history: list[Turn]) -> DetectionResult:
         """Detect misuse patterns in a single turn."""
-        if turn.role != "user":
+        if turn.role not in self.SCREENED_ROLES:
             return DetectionResult(detected=False, confidence=0.0)
 
         text = turn.content.lower()

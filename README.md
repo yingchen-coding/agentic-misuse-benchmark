@@ -364,6 +364,26 @@ intent: BLOCK
 overall: BLOCK (exit 2)
 ```
 
+### Conversation Stress
+
+`analysis/conversation_stress.py` rebuilds all 25 scenarios under perturbations that keep the attack
+turns and their labels: up to 28 benign exchanges (about 60 turns) inserted before the attack, a
+full benign conversation on another topic before an abrupt switch, and attack turns delivered as
+tool output behind a benign request. Inserted turns come from `analysis/hard_negatives/`.
+
+- **Tool relay:** the first run dropped every detector to 0% detection (rules 1.00 → 0.00,
+  classifier 0.84 → 0.00, intent 0.24 → 0.00) because they screened only user turns. Detectors now
+  screen tool output as well; rules is back to 1.00 and CI runs
+  `readiness_gate.py --detector rules --stress`.
+- **Length:** classifier detection does not fall as conversations grow, but at 28 inserted
+  exchanges one benign cybersecurity-journalism turn is flagged in every scenario (benign-turn
+  FPR 0.068, over the 0.05 stress bar).
+- **Topic shift:** the intent tracker anchors on the first user turn. After a cooking or
+  thriller-writing opener it catches 0% of attacks; after a home-network or cybersecurity opener it
+  flags 89% of benign turns.
+- The rules detector is unaffected by length and topic because it matches each turn on its own;
+  that says nothing about attacks worded differently from its patterns.
+
 ### Model Self-Labels vs. Independent Adjudicator
 
 `analysis/label_agreement.py` on the 240 differential-harm pilot rows: completion scores agree on

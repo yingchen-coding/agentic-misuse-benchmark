@@ -44,8 +44,8 @@ jobs:
       - name: Run tests
         run: pytest -q
 
-      - name: Readiness gate passes the rules detector
-        run: python readiness_gate.py --detector rules
+      - name: Readiness gate passes the rules detector, including every stress condition
+        run: python readiness_gate.py --detector rules --stress
 
       - name: Readiness gate blocks the classifier (known-fail, expects exit 2)
         run: |

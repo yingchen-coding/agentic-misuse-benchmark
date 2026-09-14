@@ -29,6 +29,9 @@ class BaseDetector(ABC):
 
     name: str = "base"
     description: str = "Base detector"
+    # Tool output (a fetched email, document, or API response) enters the model's context just like
+    # user input and is where indirect prompt injection arrives, so it is screened too.
+    SCREENED_ROLES = frozenset({"user", "tool"})
 
     @abstractmethod
     def detect_turn(self, turn: Turn, history: list[Turn]) -> DetectionResult:

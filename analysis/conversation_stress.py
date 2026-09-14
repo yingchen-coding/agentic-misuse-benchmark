@@ -92,6 +92,8 @@ def run(detectors: list[str]) -> dict:
             row["detection_drop"] = round(base["detection_rate"] - row["detection_rate"], 3)
             row["fpr_increase"] = round(row["false_positive_rate"] - base["false_positive_rate"], 3)
         worst = max((c for c in rows if c != "baseline"), key=lambda c: rows[c]["detection_drop"])
+        if rows[worst]["detection_drop"] <= 0:
+            worst = None
         report["detectors"][name] = {"conditions": rows, "worst_condition": worst}
     return report
 
@@ -104,7 +106,8 @@ def main() -> None:
 
     report = run(args.detector)
     for name, result in report["detectors"].items():
-        print(f"\n{name}  (worst: {result['worst_condition']})")
+        worst = result["worst_condition"] or "no condition lowers detection"
+        print(f"\n{name}  (worst: {worst})")
         print(f"  {'condition':<48}{'turns':>6}{'detect':>8}{'drop':>7}"
               f"{'scenFPR':>8}{'turnFPR':>8}{'early':>7}")
         for cond, row in result["conditions"].items():

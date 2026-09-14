@@ -94,7 +94,7 @@ class EmbeddingClassifier(BaseDetector):
         # Score each turn in window
         scores = [
             self._simple_embedding_score(t.content)
-            for t in window if t.role == "user"
+            for t in window if t.role in self.SCREENED_ROLES
         ]
 
         if not scores:
@@ -113,7 +113,7 @@ class EmbeddingClassifier(BaseDetector):
 
     def detect_turn(self, turn: Turn, history: list[Turn]) -> DetectionResult:
         """Detect misuse using embedding-based scoring."""
-        if turn.role != "user":
+        if turn.role not in self.SCREENED_ROLES:
             return DetectionResult(detected=False, confidence=0.0)
 
         # Build trajectory for feature extraction
@@ -145,7 +145,7 @@ class EmbeddingClassifier(BaseDetector):
         results = []
 
         for i, turn in enumerate(turns):
-            if turn.role != "user":
+            if turn.role not in self.SCREENED_ROLES:
                 results.append(DetectionResult(detected=False, confidence=0.0))
                 continue
 
