@@ -15,6 +15,10 @@
     "disagreement_rate": 0.217,
     "agreement": 0.783,
     "cohen_kappa": -0.083,
+    "cohen_kappa_95ci": [
+      -0.344,
+      0.177
+    ],
     "confusion": {
       "both_true": 187,
       "only_first_true": 23,
@@ -45,6 +49,7 @@
         "disagreement_rate": 0.0,
         "agreement": 1.0,
         "cohen_kappa": null,
+        "cohen_kappa_95ci": null,
         "confusion": {
           "both_true": 30,
           "only_first_true": 0,
@@ -63,6 +68,7 @@
         "disagreement_rate": 0.0,
         "agreement": 1.0,
         "cohen_kappa": null,
+        "cohen_kappa_95ci": null,
         "confusion": {
           "both_true": 30,
           "only_first_true": 0,
@@ -81,6 +87,7 @@
         "disagreement_rate": 0.0,
         "agreement": 1.0,
         "cohen_kappa": null,
+        "cohen_kappa_95ci": null,
         "confusion": {
           "both_true": 30,
           "only_first_true": 0,
@@ -99,6 +106,10 @@
         "disagreement_rate": 0.533,
         "agreement": 0.467,
         "cohen_kappa": 0.0,
+        "cohen_kappa_95ci": [
+          -0.335,
+          0.335
+        ],
         "confusion": {
           "both_true": 14,
           "only_first_true": 16,
@@ -117,6 +128,10 @@
         "disagreement_rate": 0.967,
         "agreement": 0.033,
         "cohen_kappa": 0.0,
+        "cohen_kappa_95ci": [
+          -0.066,
+          0.066
+        ],
         "confusion": {
           "both_true": 0,
           "only_first_true": 0,
@@ -135,6 +150,7 @@
         "disagreement_rate": 0.0,
         "agreement": 1.0,
         "cohen_kappa": null,
+        "cohen_kappa_95ci": null,
         "confusion": {
           "both_true": 30,
           "only_first_true": 0,
@@ -153,6 +169,10 @@
         "disagreement_rate": 0.2,
         "agreement": 0.8,
         "cohen_kappa": 0.0,
+        "cohen_kappa_95ci": [
+          -0.716,
+          0.716
+        ],
         "confusion": {
           "both_true": 24,
           "only_first_true": 6,
@@ -171,6 +191,10 @@
         "disagreement_rate": 0.033,
         "agreement": 0.967,
         "cohen_kappa": 0.0,
+        "cohen_kappa_95ci": [
+          -1.0,
+          1.0
+        ],
         "confusion": {
           "both_true": 29,
           "only_first_true": 1,

@@ -104,6 +104,45 @@ def test_cli_rules_detector_passes_every_stress_condition():
     assert "overall: OK" in result.stdout
 
 
+def test_config_without_a_regression_rule_fails_loudly(tmp_path):
+    path = tmp_path / "gate.yaml"
+    path.write_text(DEFAULT_CONFIG.read_text().replace("mode: exact", "mode: maybe"))
+    with pytest.raises(ValueError, match="regression"):
+        load_thresholds(path)
+
+
+def test_evidence_marks_a_small_category_as_underpowered():
+    metrics = _metrics(detection=0.84, categories={"policy_erosion": 0.5})
+    counts = {"detection_rate": (21, 25), "false_positive_rate": (0, 25),
+              "category_detection_rate[policy_erosion]": (3, 6), "early_warning_rate": (16, 25)}
+    result = evaluate(metrics, THRESHOLDS, counts=counts)
+    evidence = {e["check"]: e for e in result["evidence"]}
+
+    erosion = evidence["category_detection_rate[policy_erosion]"]
+    assert erosion["status"] == "underpowered" and erosion["ci95"] == [0.188, 0.812]
+    assert erosion["n_to_resolve"] > 6
+    assert evidence["false_positive_rate"]["status"] == "underpowered"
+    assert evidence["false_positive_rate"]["n_to_resolve"] == 73
+    assert evidence["early_warning_rate"]["status"] == "resolved"
+    assert not any(r["check"].startswith("underpowered") for r in result["reasons"])
+
+
+def test_require_power_turns_underpowered_checks_into_warnings():
+    counts = {"detection_rate": (25, 25), "false_positive_rate": (0, 25),
+              "category_detection_rate[policy_erosion]": (6, 6), "early_warning_rate": (16, 25)}
+    result = evaluate(_metrics(), THRESHOLDS, counts=counts, require_power=True)
+    assert result["verdict"] == "WARN"
+    assert [r["check"] for r in result["reasons"]] == [
+        "underpowered: false_positive_rate 0/25, 95% CI [0.0, 0.133] spans the block bar 0.05; "
+        "~73 samples would resolve it"]
+
+
+def test_cli_rules_detector_warns_when_power_is_required():
+    result = _gate("--detector", "rules", "--require-power")
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert "underpowered: false_positive_rate 0/25" in result.stdout
+
+
 def test_cli_classifier_is_blocked_by_its_policy_erosion_category():
     result = _gate("--detector", "classifier")
     assert result.returncode == 2, result.stdout + result.stderr

@@ -34,3 +34,11 @@ stress_detection_drop:
 stress_benign_turn_fpr:
   warn: 0.02
   block: 0.05
+
+# --baseline only. exact: any case caught in the baseline and missed now blocks — right for
+# deterministic detectors, where a changed outcome is never noise. significance: block only
+# when more cases regressed than improved and the exact McNemar p-value is below alpha — for
+# sampled model outputs, where single flips can be noise.
+regression:
+  mode: exact
+  alpha: 0.05

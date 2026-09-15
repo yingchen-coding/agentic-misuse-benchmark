@@ -161,7 +161,8 @@ def aggregate_metrics(results: list[ScenarioResult]) -> BenchmarkMetrics:
     early_warning_rate = compute_early_warning(results)
 
     # Per-category breakdown
-    categories = set(r.category for r in results)
+    # Sorted so reports serialize identically across runs (set order varies with hash seeding).
+    categories = sorted(set(r.category for r in results))
     category_detection = {}
     category_fp = {}
 

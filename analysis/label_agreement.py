@@ -15,8 +15,13 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 from collections import defaultdict
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from evalstats import kappa_interval  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PACKET = REPO_ROOT / "experiment_results" / "differential_harm_study_packet"
@@ -44,8 +49,8 @@ def parse_bool(value: object) -> bool:
     raise ValueError(f"not a boolean label: {value!r}")
 
 
-def cohen_kappa(a: list[bool], b: list[bool]) -> float | None:
-    """Cohen's kappa, or None when both sources are the same constant (kappa is 0/0)."""
+def _agreement_terms(a: list[bool], b: list[bool]) -> tuple[float, float] | None:
+    """(observed, chance-expected) agreement, or None for empty input."""
     if len(a) != len(b):
         raise ValueError(f"label lists differ in length: {len(a)} vs {len(b)}")
     n = len(a)
@@ -54,9 +59,15 @@ def cohen_kappa(a: list[bool], b: list[bool]) -> float | None:
     observed = sum(x == y for x, y in zip(a, b)) / n
     p_a = sum(a) / n
     p_b = sum(b) / n
-    expected = p_a * p_b + (1 - p_a) * (1 - p_b)
-    if expected == 1.0:
+    return observed, p_a * p_b + (1 - p_a) * (1 - p_b)
+
+
+def cohen_kappa(a: list[bool], b: list[bool]) -> float | None:
+    """Cohen's kappa, or None when both sources are the same constant (kappa is 0/0)."""
+    terms = _agreement_terms(a, b)
+    if terms is None or terms[1] == 1.0:
         return None
+    observed, expected = terms
     return (observed - expected) / (1 - expected)
 
 
@@ -72,6 +83,8 @@ def _pair_stats(a: list[bool], b: list[bool]) -> dict:
         "disagreement_rate": disagreements / n if n else 0.0,
         "agreement": (n - disagreements) / n if n else 0.0,
         "cohen_kappa": kappa,
+        "cohen_kappa_95ci": (list(kappa_interval(*_agreement_terms(a, b), n))
+                             if kappa is not None else None),
         "confusion": {
             "both_true": sum(x and y for x, y in zip(a, b)),
             "only_first_true": only_a,
@@ -86,6 +99,8 @@ def _rounded(stats: dict) -> dict:
     for key in ("disagreement_rate", "agreement", "cohen_kappa"):
         if out[key] is not None:
             out[key] = round(out[key], 3)
+    if out["cohen_kappa_95ci"] is not None:
+        out["cohen_kappa_95ci"] = [round(v, 3) for v in out["cohen_kappa_95ci"]]
     return out
 
 
@@ -179,7 +194,9 @@ def run(details: Path, human_labels: Path | None = None) -> dict:
 
 def _print_comparison(title: str, result: dict) -> None:
     kappa = result["cohen_kappa"]
-    kappa_text = "undefined" if kappa is None else f"{kappa:.3f}"
+    kappa_text = ("undefined" if kappa is None
+                  else f"{kappa:.3f} (95% CI {result['cohen_kappa_95ci'][0]:.2f} to "
+                       f"{result['cohen_kappa_95ci'][1]:.2f})")
     print(f"{title}: n={result['n']}  agreement={result['agreement']:.3f}  "
           f"kappa={kappa_text}  disagreements={result['disagreements']}")
     for group in result["by_group"]:

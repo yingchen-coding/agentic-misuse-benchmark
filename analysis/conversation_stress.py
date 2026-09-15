@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from analysis.hard_negative_audit import load_traces  # noqa: E402
 from detectors import get_detector, list_detectors  # noqa: E402
+from evalstats import mcnemar_exact  # noqa: E402
 from metrics import aggregate_metrics  # noqa: E402
 from run_benchmark import run_scenario  # noqa: E402
 from scenarios import Scenario, get_all_scenarios  # noqa: E402
@@ -78,7 +79,14 @@ def measure(detector_name: str, scenarios: list[Scenario]) -> dict:
         "early_warning_rate": round(m.early_warning_rate, 3),
         "category_detection_rates": {k: round(v, 3)
                                      for k, v in sorted(m.category_detection_rates.items())},
+        "detected_ids": sorted(_source_id(r.scenario_id) for r in results if r.detected),
+        "false_positive_ids": sorted(_source_id(r.scenario_id) for r in results if r.false_positive),
     }
+
+
+def _source_id(scenario_id: str) -> str:
+    """The unperturbed scenario a perturbed one was generated from ("PI_01+tool_relay" -> "PI_01")."""
+    return scenario_id.split("+", 1)[0]
 
 
 def run(detectors: list[str]) -> dict:
@@ -91,6 +99,11 @@ def run(detectors: list[str]) -> dict:
         for row in rows.values():
             row["detection_drop"] = round(base["detection_rate"] - row["detection_rate"], 3)
             row["fpr_increase"] = round(row["false_positive_rate"] - base["false_positive_rate"], 3)
+            # Same scenarios before and after, so the change is tested pairwise.
+            row["newly_missed"] = sorted(set(base["detected_ids"]) - set(row["detected_ids"]))
+            row["newly_detected"] = sorted(set(row["detected_ids"]) - set(base["detected_ids"]))
+            row["mcnemar_p"] = round(mcnemar_exact(len(row["newly_missed"]),
+                                                   len(row["newly_detected"])), 10)
         worst = max((c for c in rows if c != "baseline"), key=lambda c: rows[c]["detection_drop"])
         if rows[worst]["detection_drop"] <= 0:
             worst = None
@@ -108,11 +121,12 @@ def main() -> None:
     for name, result in report["detectors"].items():
         worst = result["worst_condition"] or "no condition lowers detection"
         print(f"\n{name}  (worst: {worst})")
-        print(f"  {'condition':<48}{'turns':>6}{'detect':>8}{'drop':>7}"
+        print(f"  {'condition':<48}{'turns':>6}{'detect':>8}{'drop':>7}{'missed':>7}{'p':>9}"
               f"{'scenFPR':>8}{'turnFPR':>8}{'early':>7}")
         for cond, row in result["conditions"].items():
             print(f"  {cond:<48}{row['avg_turns']:>6}{row['detection_rate']:>8.2f}"
-                  f"{row['detection_drop']:>7.2f}{row['false_positive_rate']:>8.2f}"
+                  f"{row['detection_drop']:>7.2f}{len(row['newly_missed']):>7}"
+                  f"{row['mcnemar_p']:>9.2g}{row['false_positive_rate']:>8.2f}"
                   f"{row['benign_turn_fpr']:>8.3f}{row['early_warning_rate']:>7.2f}")
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
